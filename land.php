@@ -21,7 +21,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Material Design Lite</title>
+    <title>StockHAWK</title>
 
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
@@ -61,6 +61,20 @@
     </style>
   </head>
   <body>
+    <?php
+        require_once '/config.php';
+        $con = mysqli_connect($hostname, $username, $password, $databasename);
+        if (mysqli_connect_errno()) {
+          die("Failed to connect");
+        } else {
+          $query = "insert into stock values('FB', 23, 10);";
+          if (mysqli_query($con, $query)) {
+            # echo "Success";
+          } else {
+            echo "Error".mysqli_error($con);
+          }
+        }
+     ?>
     <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
       <header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
         <div class="mdl-layout__header-row">
