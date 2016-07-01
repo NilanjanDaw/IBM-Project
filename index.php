@@ -48,6 +48,14 @@
 			$count=mysqli_num_rows($result);
 
 			if($count==1){
+				if($row['isAdmin']==true){
+					$_SESSION['user_type']='admin';
+				}else if($row['isPM']==true){
+					$_SESSION['user_type']='pm';
+				}else{
+					$_SESSION['user_type']='user';
+				}
+
 				$_SESSION['login_user']=$uname;
 				header("location: land.php");
 				exit();

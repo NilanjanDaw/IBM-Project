@@ -5,25 +5,77 @@
     </script>
     <?php
         session_start();
+        if(empty($_SESSION['login_user'])){
+          header("location: index.php");
+        }
         require_once '/config.php';
         $con = mysqli_connect($hostname, $username, $password, $databasename);
         if (mysqli_connect_errno()) {
           die("Failed to connect");
-        } /*else {
-          $query = "insert into stock values('FB', 23, 10);";
-          if (mysqli_query($con, $query)) {
-            # echo "Success";
-          } else {
-            echo "Error".mysqli_error($con);
+        }
+
+        if($_SESSION['user_type']=='admin'){
+          //show user allocation and Stock Update
+        }else if($_SESSION['user_type']=='pm'){
+          //show only stock update
+        }else{
+          //normal user.
+        }
+
+        $u=$_SESSION['login_user'];
+        $query="select cash from user where uemail='$u'";
+        $res=mysqli_query($con,$query);
+        /*if(mysqli_errno($con)){
+          header("location: error.php");exit();
+        }*/
+        $row=mysqli_fetch_array($res);
+        $availableCash=$row[0]; // Need to print this one.
+
+
+        $query="select * from utransaction where uemail='$u' order by tdate desc";
+        $res=mysqli_query($con,$query);
+        if($res==false){
+          echo mysqli_errno($con).": ".mysqli_error($con);
+          //header("location: error.php");exit();
+        }else{
+          $row=mysqli_fetch_array($res);
+          $count=mysqli_num_rows($res);
+          if($count==0){
+            //echo 'sorry, no transaction found';
+          }else{
+            while($row=mysqli_fetch_array($res)){
+              //print the transactions in place of the graphs. Please do it in a sexy way.
+            }
           }
-        }*/
+        }
 
 
-        /*function performLogout(){
-          session_destroy();
-          header("location: index.php");
-          exit();
-        }*/
+
+        function updateCash($val,$type,$availableCash){
+          //1-> deposit cash, 2-> withdraw cash
+          if($type==1){
+              $q1="update user set cash='$availableCash'+'$val' where uemail='$u'";
+              $r1=mysqli_query($con,$q1);
+              if(mysqli_errno($con)){
+                header("location: error.php");exit();
+              }else{
+                header("location: land.php");exit();
+              }
+          }else{
+            if($val>$availableCash){
+              echo '<script type="text/javascript">alert("Enough Cash not available.");</script>';
+            }else{
+              $q1="update user set cash='$availableCash'-'$val' where uemail='$u'";
+              $r1=mysqli_query($con,$q1);
+              if(mysqli_errno($con)){
+                header("location: error.php");exit();
+              }else{
+                header("location: land.php");exit();
+              }
+            }
+          }
+        }
+
      ?>
     <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
       <?php require_once '/header_bar.html' ?>

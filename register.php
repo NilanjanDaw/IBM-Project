@@ -39,7 +39,7 @@
 
       function performRegister($uemail,$uname,$pass,$repass,$con){
         if($pass==$repass){
-          $cash=0;$isadmin=false;$ispm=false;$allot=null;
+          $cash=0;$isadmin=false;$ispm=false;$allot='no';
           $query="select uemail from user where uemail='$uemail'";
           $res=mysqli_query($query);
           if(res>=1){
@@ -84,7 +84,7 @@
 		</div>
 		<div class="login-box animated fadeInUp">
 			<div class="box-header">
-				<h2>Log In</h2>
+				<h2>Sign Up</h2>
 			</div>
 			<!--<form method="post" action="land.php">-->
 			<form method="post">
@@ -110,8 +110,8 @@
 
         <button type="submit">Register</button>
 				<br/>
-				<a href="land.php"><p class="small">Forgot your password?</p></a>
-				<a href="#"><p class="small">New User?Register here</p></a>
+				<!--<a href="land.php"><p class="small">Forgot your password?</p></a>
+				<a href="#"><p class="small">New User?Register here</p></a>-->
 		</form>
 		</div>
 	</div>

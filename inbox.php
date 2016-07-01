@@ -6,10 +6,24 @@
   </script>
   <?php
       session_start();
+      if(empty($_SESSION['login_user'])){
+        header("location: index.php");
+      }
       require_once '/config.php';
       $con = mysqli_connect($hostname, $username, $password, $databasename);
       if (mysqli_connect_errno()) {
         die("Failed to connect");
+      }
+
+      $u=$_SESSION['login_user'];
+      $query="select msgbody,fromuser from message where touser='$u'";
+      $res=mysqli_query($con,$query);
+      if(mysqli_errno($con)){
+        echo mysqli_errno($con).": ".mysqli_error($con);
+        //header("location: error.php");exit();
+      }
+      while($row=mysqli_fetch_array($res)){
+        //print the message in the boxes.
       }
   ?>
   <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
