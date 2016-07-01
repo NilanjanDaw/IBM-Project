@@ -8,8 +8,15 @@
       if (mysqli_connect_errno()) {
         die("Failed to connect");
       }
-
+      /*
+        Sending message to server. Nilanjan Says Hello! :p
+      */
       $u=$_SESSION['login_user'];
+      $message = $_POST['message'];
+      $to = $_POST['destination'];
+      $query = "insert into message(fromuser, touser, msgbody) values('$u', '$to', '$message')";
+      echo $query;
+      mysqli_query($con, $query);
       $query="select msgbody,touser from message where fromuser='$u'";
       $res=mysqli_query($con,$query);
       if(mysqli_errno($con)){
