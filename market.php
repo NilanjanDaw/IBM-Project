@@ -3,7 +3,7 @@
   <script type="text/javascript">
 
   </script>
-  <?php
+    <?php
       session_start();
       if(empty($_SESSION['login_user'])){
         header("location: index.php");
@@ -61,11 +61,10 @@
                 Current Value: <?php echo $cur; ?>
               </div>
               <div class="mdl-card__actions mdl-card--border">
-                <form method="post" action="purchase.php">
-                <button type="submit" name="company" value=<?php echo '"'.$r1[0].'"'; ?> class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--teal-500">
+                <button name="company" value=<?php echo '"'.$r1[0].'"'; ?>
+                  class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--teal-500" onclick="setData(this);">
                   Purchase
                 </button>
-                <form>
               </div>
             </div>
           </div>
@@ -74,6 +73,12 @@
       </div>
     </main>
   </div>
+  <script type="text/javascript">
+    function setData(object) {
+      document.cookie = "company=" + object.value;
+      window.location = "purchase.php";
+    }
+  </script>
   <script src="../../material.min.js"></script>
 </body>
 </html>

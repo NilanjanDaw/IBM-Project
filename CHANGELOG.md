@@ -2,9 +2,16 @@
 - Added changelog
 
 ## Jul 01, 2016
+@Author Nilanjan Daw
 - templates created
 
-## Jul 02, 2015
+## Jul 02, 2016
+@Author Nilanjan Daw
 - Inbox working
 - Market Page Online
 - Work Started on Purchase Page
+
+## Jul 08, 2016
+@Author Nilanjan Daw
+- Graphs Generated(Ported Code to Google Charts API)
+- Purchase Page Almost Done. Waiting for Stock Limits
