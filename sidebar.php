@@ -21,8 +21,11 @@
     <a class="mdl-navigation__link" href="inbox.php"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Inbox</a>
     <a class="mdl-navigation__link" href="sentbox.php"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">message</i>Outbox</a>
     <a class="mdl-navigation__link" href="market.php"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">shopping_cart</i>Market</a>
+    <?php
+    if($_SESSION['user_type']=='admin' || $_SESSION['user_type']=='pm'){?>
     <a class="mdl-navigation__link" href="updatestock.php"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">flag</i>Update Stock</a>
     <a class="mdl-navigation__link" href="allocateuser.php"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">person</i>Allocate User</a>
+    <?php } ?>
     <a class="mdl-navigation__link" href="social.php"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Social</a>
     <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">report</i>Report Error</a>
     <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i>Help</a>
