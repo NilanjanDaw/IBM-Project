@@ -1,11 +1,11 @@
 <html>
-<?php require_once '/header.html' ?>
+<?php require_once './header.html' ?>
 <?php
       session_start();
       if(empty($_SESSION['login_user'])){
         header("location: land.php");exit();
       }
-      require_once '/config.php';
+      require_once './config.php';
       $con = mysqli_connect($hostname, $username, $password, $databasename);
       if (mysqli_connect_errno()) {
         header("location: error.html");//die("Failed to connect");
@@ -14,8 +14,8 @@
 ?>
 <body>
   <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
-    <?php require_once '/header_bar.html' ?>
-    <?php require_once '/sidebar.php' ?>
+    <?php require_once './header_bar.html' ?>
+    <?php require_once './sidebar.php' ?>
     <?php
           $q1="select uname from user where isPm=true";
           $rs1=mysqli_query($con,$q1);

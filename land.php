@@ -1,4 +1,4 @@
-<?php require_once '/header.html' ?>
+<?php require_once './header.html' ?>
   <body>
     <script type="text/javascript">
 
@@ -8,7 +8,7 @@
         if(empty($_SESSION['login_user'])){
           header("location: index.php");
         }
-        require_once '/config.php';
+        require_once './config.php';
         $con = mysqli_connect($hostname, $username, $password, $databasename);
         if (mysqli_connect_errno()) {
           //die("Failed to connect");

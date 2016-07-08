@@ -1,4 +1,4 @@
-<?php require_once '/chart_head.html' ?>
+<?php require_once './chart_head.html' ?>
 <body>
   <script type="text/javascript"></script>
   <?php
@@ -6,17 +6,17 @@
     if(empty($_SESSION['login_user'])){
       header("location: index.php");
     }
-    require_once '/config.php';
+    require_once './config.php';
     $con = mysqli_connect($hostname, $username, $password, $databasename);
     if (mysqli_connect_errno()) {
       die("Failed to connect");
     }
 
-    
+
   ?>
   <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
-    <?php require_once '/header_bar.html' ?>
-    <?php require_once '/sidebar.php' ?>
+    <?php require_once './header_bar.html' ?>
+    <?php require_once './sidebar.php' ?>
     <main class="mdl-layout__content mdl-color--grey-100">
       <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
         <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
