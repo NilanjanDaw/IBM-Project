@@ -9,7 +9,7 @@
       require_once '/config.php';
       $con = mysqli_connect($hostname, $username, $password, $databasename);
       if (mysqli_connect_errno()) {
-        die("Failed to connect");
+        header("location: error.html");//die("Failed to connect");
       }
       $u=$_SESSION['login_user'];
       $query="select msgbody,touser from message where fromuser='$u';";
