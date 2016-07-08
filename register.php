@@ -20,7 +20,7 @@
       require_once '/config.php';
       $con=mysqli_connect($hostname,$username,$password,$databasename);
       if(mysqli_connect_errno()){
-        die("Connection Error. Please try again in some time.");
+        header("location: error.html");//die("Connection Error. Please try again in some time.");
       }else{
         //echo '<script type="text/javascript">alert("Connection Set.");</script>';
       }

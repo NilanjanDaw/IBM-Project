@@ -15,3 +15,9 @@
 @Author Nilanjan Daw
 - Graphs Generated(Ported Code to Google Charts API)
 - Purchase Page Almost Done. Waiting for Stock Limits
+
+## Jul 08, 2016
+@Author Priyanjit Dey
+- Completed/Modified Logical queries.
+- Changed UI of sendbox.php. Minor UI improvements.
+- Waiting for UI to implement Stock Split.

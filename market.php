@@ -11,7 +11,7 @@
       require_once '/config.php';
       $con = mysqli_connect($hostname, $username, $password, $databasename);
       if (mysqli_connect_errno()) {
-        die("Failed to connect");
+        header("location: error.html");//die("Failed to connect");
       }
 
       $q1="select distinct company from stockvalue";
@@ -23,7 +23,7 @@
   ?>
   <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
     <?php require_once '/header_bar.html' ?>
-    <?php require_once '/sidebar.html' ?>
+    <?php require_once '/sidebar.php' ?>
     <main class="mdl-layout__content mdl-color--grey-100">
       <div class="mdl-grid demo-content">
         <?php
