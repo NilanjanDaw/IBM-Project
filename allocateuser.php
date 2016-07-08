@@ -1,5 +1,5 @@
 <html>
-<?php require_once './header.html' ?>
+<?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'header.html' ?>
 <body>
 <?php
     session_start();
@@ -28,8 +28,8 @@
 ?>
 
   <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
-      <?php require_once './header_bar.html' ?>
-      <?php require_once './sidebar.php' ?>
+    <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'header_bar.html' ?>
+    <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'sidebar.php' ?>
       <!-- design here. call the allocate on clicking submit -->
       <main class="mdl-layout__content mdl-color--grey-100">
           <div class="mdl-grid demo--content">

@@ -21,3 +21,7 @@
 - Completed/Modified Logical queries.
 - Changed UI of sendbox.php. Minor UI improvements.
 - Waiting for UI to implement Stock Split.
+
+## Jul 08, 2016
+@Author Nilanjan Daw
+- Made all paths platform independent

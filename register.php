@@ -17,7 +17,7 @@
 
 <body>
   <?php
-      require_once './config.php';
+      require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'config.php';
       $con=mysqli_connect($hostname,$username,$password,$databasename);
       if(mysqli_connect_errno()){
         header("location: error.html");//die("Connection Error. Please try again in some time.");

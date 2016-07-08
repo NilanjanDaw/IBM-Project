@@ -1,5 +1,5 @@
 <html>
-<?php require_once './header.html' ?>
+<?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'header.html' ?>
 <?php
       session_start();
       if(empty($_SESSION['login_user'])){
@@ -14,8 +14,8 @@
 ?>
 <body>
   <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
-    <?php require_once './header_bar.html' ?>
-    <?php require_once './sidebar.php' ?>
+    <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'header_bar.html' ?>
+    <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'sidebar.php' ?>
     <?php
           $q1="select uname from user where isPm=true";
           $rs1=mysqli_query($con,$q1);
