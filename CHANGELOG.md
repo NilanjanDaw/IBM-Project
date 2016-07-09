@@ -22,6 +22,8 @@
 - Changed UI of sendbox.php. Minor UI improvements.
 - Waiting for UI to implement Stock Split.
 
-## Jul 08, 2016
+## Jul 09, 2016
 @Author Nilanjan Daw
 - Made all paths platform independent
+- Multi-graph added to landing Page
+- Transaction table added to landing Page

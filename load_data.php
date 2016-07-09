@@ -16,7 +16,7 @@
     }
    $table['cols'] = array(
    array('label' => 'Transaction Date', 'type' => 'number'),
-   array('label' => 'Total Count', 'type' => 'number'),
+   array('label' => 'Price', 'type' => 'number'),
    );
     $rows = array();
     $i = 0;
