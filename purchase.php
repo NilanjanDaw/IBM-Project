@@ -15,6 +15,7 @@
     }
     if (array_key_exists('isPurchase', $_POST) && $_POST["isPurchase"] == "true") {
       # Run all your queries here...
+      $numberOfStocks = $_POST["stock_num"];
     }
 
   ?>
