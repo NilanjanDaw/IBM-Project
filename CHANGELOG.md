@@ -27,3 +27,9 @@
 - Made all paths platform independent
 - Multi-graph added to landing Page
 - Transaction table added to landing Page
+
+## Jul 11, 2016
+@Author Priyanjit Dey
+- Update Database. Modified tables for stock and company.
+- Updatestock.php
+- Allocateuser.php

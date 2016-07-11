@@ -68,7 +68,7 @@
       <main class="mdl-layout__content mdl-color--grey-100">
         <div class="mdl-grid demo-content">
           <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-            <label class="">ALL HAIL!!! Enter folio details </label>
+            <!--<label class="">ALL HAIL!!! Enter folio details </label>-->
           </div>
           <div class="demo-charts mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
             <div class="mdl-card__supporting-text mdl-color-text--teal-500">
@@ -90,7 +90,7 @@
                 <a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">Read More</a>
               </div>
             </div>
-            </div>
+          </div>
             <div class="demo-charts mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--12-col">
               <div class="mdl-card__supporting-text mdl-color-text--teal-500">
                 <h6>Your Transactions</h6>

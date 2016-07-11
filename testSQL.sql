@@ -12,6 +12,7 @@ desc stockvalue;
 desc user;
 desc utransaction;	
 desc message;
+desc company;
 
 select * from message;
 select * from stockvalue;
@@ -36,3 +37,17 @@ select t.company, s.stime, s.price price from stockvalue s
     and uemail = 'priyanjitcareer@gmail.com';
     
 select * from error_tracker;
+
+DELIMITER $$
+create trigger `cash_check` before update on user
+for each row
+begin
+   declare msg varchar(128);
+if new.cash<0 then
+set msg=concat("Negative cash balance not allowed.");
+           signal sqlstate '45000' set message_text=msg;
+end if;
+end;
+$$
+
+show grants;
