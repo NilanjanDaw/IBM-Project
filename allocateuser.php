@@ -13,17 +13,28 @@
     $con = mysqli_connect($hostname, $username, $password, $databasename);
     if (mysqli_connect_errno()) {
       //die("Failed to connect");
-      header("location: error.html");
+      header("location: error.html");exit();
     }
 
-    function allocate($uname,$aname){
-      $q1="select * from user where uemail='$aname'";
-      $rs1=mysqli_query($con,$q1);
-      $r1=mysqli_fetch_array($rs1);
-      if($rs1['isAdmin'] || $rs1['isPM']){
-        $q2="update user set allotedto='$aname' where uname='$uname'";
-        $rs2=mysqli_query($con,$q2);
+    if($_SERVER["REQUEST_METHOD"]=="POST"){
+        $uname=$_POST['uname'];
+        $aname=$_POST['aname'];
+        allocate($con,$uname,$aname);
+    }
+
+    function allocate($con,$uname,$aname){
+      $q0="select uemail from user where uemail='$aname' and isAdmin=true or isPM=true";
+      $rs0=mysqli_query($con,$q0);
+      $cnt=mysqli_num_rows($rs0);
+      if($cnt>0){
+        $q1="update user set allotedto='$aname' where uemail='$uname'";
+        $rs1=mysqli_query($con,$q1);
+        if(mysqli_errno($con)){header("location: error.php");}
+      }else{
+         echo '<script type="text/javascript">alert("No such Admin/PM exists.");</script>';
       }
+
+
     }
 ?>
 
@@ -34,6 +45,58 @@
       <main class="mdl-layout__content mdl-color--grey-100">
           <div class="mdl-grid demo--content">
           </div>
+
+          <div class="demo-charts mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--12-col">
+            <div class="mdl-card__supporting-text mdl-color-text--teal-500">
+              <h2>Unalloted Users</h2>
+            </div>
+              <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                <thead>
+                  <tr>
+                    <th class="mdl-data-table__cell--non-numeric">Email</th>
+                    <th class="mdl-data-table__cell--non-numeric">Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <?php $q1="select uemail,uname from user where allotedto='no'";
+                      $rs1=mysqli_query($con,$q1);
+                      if(mysqli_errno($con)){
+                        header("location: error.php");exit();
+                      }
+                      while($r1=mysqli_fetch_array($rs1)){
+                        echo '<tr>
+                          <td class="mdl-data-table__cell--non-numeric">'.$r1[0].'</td>
+                          <td>'.$r1[1].'</td>
+                        </tr>';
+                      }
+                      echo "</tbody>
+                      </table>";?>
+          </div>
+
+          <div class="demo-separator mdl-cell--1-col"></div>
+          <div class="demo-options mdl-card mdl-color--white-500 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
+            <div class="mdl-card__supporting-text mdl-color-text--teal-500">
+              <h3>Stock Split</h3>
+              <!-- Simple Textfield -->
+            <form method="post">
+              <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" id="cname" name="uname">
+                <label class="mdl-textfield__label" for="sample1">User ID</label>
+              </div>
+              <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" id="newval" name="aname">
+                <label class="mdl-textfield__label" for="sample1">Admin/PM ID</label>
+              </div>
+
+              <div class="mdl-card__actions mdl-card--border">
+                <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--teal-500" name="allot">Allocate</button>
+                <div class="mdl-layout-spacer"></div>
+              </div>
+            </form>
+            </div>
+          </div>
+
+
       </main>
   </div>
 <script src="../../material.min.js"></script>
