@@ -9,11 +9,55 @@
     require_once './config.php';
     $con = mysqli_connect($hostname, $username, $password, $databasename);
     if (mysqli_connect_errno()) {
+      header("location: error.php");
+      exit();
       die("Failed to connect");
     }
-
+    if (array_key_exists('isPurchase', $_POST) && $_POST["isPurchase"] == "true") {
+      # Run all your queries here...
+    }
 
   ?>
+  <style>
+
+    .mdl-dialog {
+      border: none;
+      box-shadow: 0 9px 46px 8px rgba(0, 0, 0, 0.14), 0 11px 15px -7px rgba(0, 0, 0, 0.12), 0 24px 38px 3px rgba(0, 0, 0, 0.2);
+      width: 280px; }
+      .mdl-dialog__title {
+        padding: 24px 24px 0;
+        margin: 0;
+        font-size: 2.5rem; }
+      .mdl-dialog__actions {
+        padding: 8px 8px 8px 24px;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-direction: row-reverse;
+            -ms-flex-direction: row-reverse;
+                flex-direction: row-reverse;
+        -webkit-flex-wrap: wrap;
+            -ms-flex-wrap: wrap;
+                flex-wrap: wrap; }
+        .mdl-dialog__actions > * {
+          margin-right: 8px;
+          height: 36px; }
+          .mdl-dialog__actions > *:first-child {
+            margin-right: 0; }
+        .mdl-dialog__actions--full-width {
+          padding: 0 0 8px 0; }
+          .mdl-dialog__actions--full-width > * {
+            height: 48px;
+            -webkit-flex: 0 0 100%;
+                -ms-flex: 0 0 100%;
+                    flex: 0 0 100%;
+            padding-right: 16px;
+            margin-right: 0;
+            text-align: right; }
+      .mdl-dialog__content {
+        padding: 20px 24px 24px 24px;
+        color: rgba(0,0,0, 0.54); }
+    </style>
   <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
     <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'header_bar.html' ?>
     <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'sidebar.php' ?>
@@ -37,11 +81,58 @@
               <div class="mdl-cell mdl-cell--3-col"><h5>Current Price '.$row['price'].' </h5></div>
             </div>';
          }
+         $_COOKIE['stock_price'] = $row['price'];
          ?>
+           <form action="purchase.php" method="post" name="purchase_stocks">
+             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+               <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" name="stock_num" onchange="calculate();">
+               <label class="mdl-textfield__label" for="stock_num">Enter number of Stocks</label>
+               <span class="mdl-textfield__error">Input is not a number!</span>
+               <input type="hidden" name="isPurchase" id="isPurchase" value="false" />
+             </div>
+             <div class="mdl-card__actions mdl-card--border">
+               <button type="button" name="pur" class="mdl-button mdl-button--raised mdl-js-button mdl-js-ripple-effect mdl-color-text--teal-500 show-modal">Purchase</button>
+             </div>
+             <div class="mdl-layout-spacer"></div>
+         </form>
+        </div>
+        <dialog class="mdl-dialog">
+          <h3 class="mdl-dialog__title">Purchase</h3>
+          <div class="mdl-dialog__content">
+            <p>
+              Are you sure you want to buy the stocks?
+            </p>
+          </div>
+         <div class="mdl-dialog__actions mdl-dialog__actions--full-width">
+           <button type="button" class="mdl-button buy">Purchase</button>
+           <button type="button" class="mdl-button close">Cancel</button>
          </div>
+       </dialog>
+       <script src='https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.2/dialog-polyfill.min.js'></script>
+       <script src='https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js'></script>
+       <script type="text/javascript">
+
+         var dialog = document.querySelector('dialog');
+         var showModalButton = document.querySelector('.show-modal');
+         var ispurchase = document.getElementById("isPurchase");
+         if (! dialog.showModal) {
+           dialogPolyfill.registerDialog(dialog);
+         }
+         showModalButton.addEventListener('click', function() {
+           dialog.showModal();
+         });
+         dialog.querySelector('.close').addEventListener('click', function() {
+           dialog.close();
+         });
+         dialog.querySelector('.buy').addEventListener('click', function() {
+           dialog.close();
+           ispurchase.value = "true";
+           document.purchase_stocks.submit();
+         });
+
+       </script>
       </div>
       <div class="mdl-grid demo-content" id="graph_grid">
-
       </div>
     </main>
   </div>

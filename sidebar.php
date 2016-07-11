@@ -27,7 +27,7 @@
     <a class="mdl-navigation__link" href="allocateuser.php"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">person</i>Allocate User</a>
     <?php } ?>
     <a class="mdl-navigation__link" href="social.php"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Social</a>
-    <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">report</i>Report Error</a>
+    <a class="mdl-navigation__link" href="error_submit.php"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">report</i>Report Error</a>
     <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i>Help</a>
     <!--<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">local_offer</i>Promos</a>-->
     <div class="mdl-layout-spacer"></div>
