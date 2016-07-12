@@ -62,6 +62,21 @@
         <div class="mdl-grid demo-content">
           <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
             <!--<label class="">ALL HAIL!!! Enter folio details </label>-->
+            <?php
+                $q1="select * from user where uemail='".$_SESSION['login_user']."'";
+                $rs1=mysqli_query($con, $q1);
+                if(mysqli_errno($con)){
+                    header("location: error.html");exit();
+                } ?>
+                <div class="mdl-grid demo-content">
+              <?php
+                while($row = mysqli_fetch_assoc($rs1)) {
+                  print_r($row);
+                  
+                }
+              ?>
+              </div>
+
           </div>
           <div class="demo-charts mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
             <div class="mdl-card__supporting-text mdl-color-text--teal-500">

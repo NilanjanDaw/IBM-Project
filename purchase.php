@@ -124,6 +124,24 @@
     <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'sidebar.php' ?>
     <main class="mdl-layout__content mdl-color--grey-100">
       <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+        <!--<label class="">ALL HAIL!!! Enter folio details </label>-->
+        <?php
+            $q1="select * from user where uemail='".$_SESSION['login_user']."'";
+            $rs1=mysqli_query($con, $q1);
+            if(mysqli_errno($con)){
+                header("location: error.html");exit();
+            } ?>
+            <div class="mdl-grid demo-content">
+          <?php
+            while($row = mysqli_fetch_assoc($rs1)) {
+              print_r($row);
+
+            }
+          ?>
+          </div>
+
+      </div>
+      <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
         <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
           <h1 class="mdl-card__title-text mdl-color-text--white"><b><?php echo $_COOKIE['company'] ?></b></h1>
         </div>
