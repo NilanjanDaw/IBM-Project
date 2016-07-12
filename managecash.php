@@ -70,10 +70,6 @@
 
             <div class="mdl-card__actions mdl-card--border">
               <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--teal-500" name="deposit">Deposit</button>
-              <div class="mdl-layout-spacer"></div>
-            </div>
-
-            <div class="mdl-card__actions mdl-card--border">
               <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--teal-500" name="withdraw">Withdraw</button>
               <div class="mdl-layout-spacer"></div>
             </div>

@@ -91,13 +91,11 @@
     <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'header_bar.html' ?>
     <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'sidebar.php' ?>
     <main class="mdl-layout__content mdl-color--grey-100">
-
-
       <div class="demo-charts mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--12-col">
         <div class="mdl-card__supporting-text mdl-color-text--teal-500">
           <h2>Your Shares</h2>
-        </div>
-          <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+          <div class="mdl-cell mdl-cell--3"></div>
+          <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp mdl-cell mdl-cell--6" id="sell">
             <thead>
               <tr>
                 <th class="mdl-data-table__cell--non-numeric">Company</th>
@@ -134,6 +132,8 @@
                   echo "</tbody>
                   </table>";
             ?>
+            <div class="mdl-cell mdl-cell--3"></div>
+          </div>
         </div>
 
         <div class="demo-separator mdl-cell--1-col"></div>
@@ -152,14 +152,35 @@
             </div>
 
             <div class="mdl-card__actions mdl-card--border">
-              <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--teal-500" name="split">Sell</button>
+              <button type="submit" class="mdl-button mdl-button--raised mdl-js-button mdl-js-ripple-effect mdl-color-text--teal-500" name="split">Sell</button>
               <div class="mdl-layout-spacer"></div>
             </div>
           </form>
           </div>
         </div>
+        <script type="text/javascript">
+        function addRowHandlers() {
+            var table = document.getElementById("sell");
+            var rows = table.getElementsByTagName("tr");
+            var customerAllocate = document.getElementById("cname");
+            for (i = 0; i < rows.length; i++) {
+                var currentRow = table.rows[i];
+                var createClickHandler =
+                    function(row)
+                    {
+                        return function() {
+                                                var cell = row.getElementsByTagName("td")[0];
+                                                var id = cell.innerHTML;
+                                                customerAllocate.value = id;
+                                                customerAllocate.label = false;
+                                         };
+                    };
 
-
+                currentRow.onclick = createClickHandler(currentRow);
+            }
+          }
+          window.onload = addRowHandlers();
+        </script>
     </main>
   </div>
   <script src="../../material.min.js"></script>

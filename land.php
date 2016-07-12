@@ -87,7 +87,7 @@
                       $cnt=mysqli_num_rows($rs1);
                       if($cnt!=0){
                           echo '<div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                            Welcome '.$_SESSION['login_user'].'. There are '.$cnt.' unallocated users.
+                            Welcome '.$_SESSION['login_user'].'. There is/are '.$cnt.' unallocated user(s).
                           </div>
                           <div class="mdl-card__actions mdl-card--border">
                             <a href="allocateuser.php" class="mdl-button mdl-js-button mdl-js-ripple-effect">Allocate</a>
@@ -115,63 +115,63 @@
             <div class="demo-charts mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--12-col">
               <div class="mdl-card__supporting-text mdl-color-text--teal-500">
                 <h6>Your Transactions</h6>
-              </div>
-              <?php
-                $query="select * from utransaction where uemail='$u' order by tdate desc";
-                $res=mysqli_query($con,$query);
-                if($res==false){
-                  echo mysqli_errno($con).": ".mysqli_error($con);
-                  //header("location: error.php");exit();
-                }else{
-                  $count=mysqli_num_rows($res);
-                  if($count==0){
-                    echo '<h6>sorry, no transaction found</h6>';
+                <?php
+                  $query="select * from utransaction where uemail='$u' order by tdate desc";
+                  $res=mysqli_query($con,$query);
+                  if($res==false){
+                    echo mysqli_errno($con).": ".mysqli_error($con);
+                    //header("location: error.php");exit();
                   }else{
-                ?>
-                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-                      <thead>
-                        <tr>
-                          <th class="mdl-data-table__cell--non-numeric">User Name</th>
-                          <th class="mdl-data-table__cell--non-numeric">Manager Name</th>
-                          <th class="mdl-data-table__cell--non-numeric">Transaction Date</th>
-                          <th class="mdl-data-table__cell--non-numeric">Company</th>
-                          <th class="mdl-data-table__cell--non-numeric">Transaction Type</th>
-                          <th>Number of Stocks</th>
-                          <th>Unit price</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-               <?php
-                    while($row=mysqli_fetch_assoc($res)){
-                      //print the transactions in place of the graphs. Please do it in a sexy way.
-                      if ($row["ttype"] == 1)
-                        echo '<tr>
-                          <td class="mdl-data-table__cell--non-numeric">'.$row["uemail"].'</td>
-                          <td class="mdl-data-table__cell--non-numeric">'.$row["uPMemail"].'</td>
-                          <td class="mdl-data-table__cell--non-numeric">'.$row["tdate"].'</td>
-                          <td class="mdl-data-table__cell--non-numeric">'.$row["company"].'</td>
-                          <td class="mdl-data-table__cell--non-numeric">Buy</td>
-                          <td>'.$row["quantity"].'</td>
-                          <td>'.$row["price"].'</td>
-                        </tr>';
-                      else {
-                        echo '<tr>
-                          <td class="mdl-data-table__cell--non-numeric">'.$row["uemail"].'</td>
-                          <td class="mdl-data-table__cell--non-numeric">'.$row["uPMemail"].'</td>
-                          <td class="mdl-data-table__cell--non-numeric">'.$row["tdate"].'</td>
-                          <td class="mdl-data-table__cell--non-numeric">'.$row["company"].'</td>
-                          <td class="mdl-data-table__cell--non-numeric">Sell</td>
-                          <td>'.$row["quantity"].'</td>
-                          <td>'.$row["price"].'</td>
-                        </tr>';
+                    $count=mysqli_num_rows($res);
+                    if($count==0){
+                      echo '<h6>sorry, no transaction found</h6>';
+                    }else{
+                  ?>
+                      <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                        <thead>
+                          <tr>
+                            <th class="mdl-data-table__cell--non-numeric">User Name</th>
+                            <th class="mdl-data-table__cell--non-numeric">Manager Name</th>
+                            <th class="mdl-data-table__cell--non-numeric">Transaction Date</th>
+                            <th class="mdl-data-table__cell--non-numeric">Company</th>
+                            <th class="mdl-data-table__cell--non-numeric">Transaction Type</th>
+                            <th>Number of Stocks</th>
+                            <th>Unit price</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                 <?php
+                      while($row=mysqli_fetch_assoc($res)){
+                        //print the transactions in place of the graphs. Please do it in a sexy way.
+                        if ($row["ttype"] == 1)
+                          echo '<tr>
+                            <td class="mdl-data-table__cell--non-numeric">'.$row["uemail"].'</td>
+                            <td class="mdl-data-table__cell--non-numeric">'.$row["uPMemail"].'</td>
+                            <td class="mdl-data-table__cell--non-numeric">'.$row["tdate"].'</td>
+                            <td class="mdl-data-table__cell--non-numeric">'.$row["company"].'</td>
+                            <td class="mdl-data-table__cell--non-numeric">Buy</td>
+                            <td>'.$row["quantity"].'</td>
+                            <td>'.$row["price"].'</td>
+                          </tr>';
+                        else {
+                          echo '<tr>
+                            <td class="mdl-data-table__cell--non-numeric">'.$row["uemail"].'</td>
+                            <td class="mdl-data-table__cell--non-numeric">'.$row["uPMemail"].'</td>
+                            <td class="mdl-data-table__cell--non-numeric">'.$row["tdate"].'</td>
+                            <td class="mdl-data-table__cell--non-numeric">'.$row["company"].'</td>
+                            <td class="mdl-data-table__cell--non-numeric">Sell</td>
+                            <td>'.$row["quantity"].'</td>
+                            <td>'.$row["price"].'</td>
+                          </tr>';
+                        }
                       }
+                      echo "</tbody>
+                    </table>";
                     }
-                    echo "</tbody>
-                  </table>";
                   }
-                }
-               ?>
+                 ?>
 
+              </div>
             </div>
           </div>
         </div>
