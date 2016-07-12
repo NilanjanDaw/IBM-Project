@@ -45,7 +45,7 @@
               header("location: error.html");exit();
           }
           $rowcompany=mysqli_fetch_array($rscompany);
-          $newcash=$rowcompany['baseprice']*$stocksell;
+          $newcash=$rowcompany['baseprice'] * $stocksell;
           $newstock=$rowcompany['totalstock']+$stocksell;
           $newprice=($rowcompany['ratio']*1000)/$newstock;
 
