@@ -14,10 +14,10 @@
         header("location: error.html");//die("Failed to connect");
       }
 
-      $q1="select distinct company from stockvalue";
+      $q1="select cname,baseprice from company";
       $rs1=mysqli_query($con,$q1);
       if(mysqli_errno($con)){
-        header("location: error.php");exit();
+        header("location: error.html");exit();
       }
 
   ?>
@@ -30,21 +30,19 @@
             while($r1=mysqli_fetch_array($rs1)) {
                 $q2="select price from stockvalue where company='$r1[0]' order by stime desc";
                 $rs2=mysqli_query($con,$q2);
-                $cnt=0;$prev=0.00;$cur=0.00;
+                $cnt=0;$prev=0.00;$cur=$r1['baseprice'];
                 if(mysqli_errno($con)){
-                  header("location: error.php");exit();
+                  header("location: error.html");exit();
                 }
               while($r2=mysqli_fetch_array($rs2)) {
                 if($cnt==0) {
-                  $cur=$r2[0];
+                  continue;
                 }else if($cnt==1){
-                  $prev=$r2[0];
-                }else{
-                  break;
+                  $prev=$r2[0];break;
                 }
                 $cnt++;
               }
-              if($prev==0.00){
+              if($prev==0){
                 $prev=$cur;
               }
          ?>
