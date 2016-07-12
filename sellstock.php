@@ -45,9 +45,7 @@
               header("location: error.html");exit();
           }
           $rowcompany=mysqli_fetch_array($rscompany);
-          $newcash=$rowcompany['baseprice'] * $stocksell;
-          $newstock=$rowcompany['totalstock']+$stocksell;
-          $newprice=($rowcompany['ratio']*1000)/$newstock;
+
 
           $quser="select * from user where uemail='$uname'";
           $rsuser=mysqli_query($con,$quser);
@@ -55,6 +53,10 @@
               header("location: error.html");exit();
           }
           $rowuser=mysqli_fetch_array($rsuser);
+
+          $newcash=($rowcompany['baseprice'] * $stocksell)+$rowuser['cash'] ;
+          $newstock=$rowcompany['totalstock']+$stocksell;
+          $newprice=($rowcompany['ratio']*1000)/$newstock;
           if($rowuser['allotedto']=="no"){
             echo '<script type="text/javascript">alert("User not alloted to any Manager.");</script>';
             header("location: sellstock.php");exit();
@@ -66,8 +68,8 @@
               header("location: error.html");exit();
           }
 
-          $qupdateuser="update user set cash= cash + '$newcash' where uemail='$uname'";
-          $rsupdateuser=mysqli_query($con,$quser);
+          $qupdateuser="update user set cash= '$newcash' where uemail='$uname'";
+          $rsupdateuser=mysqli_query($con,$qupdateuser);
           if(mysqli_errno($con)){
               header("location: error.html");exit();
           }

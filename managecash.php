@@ -12,7 +12,9 @@
           //die("Failed to connect");
           header("location: error.html");exit();
         }
-
+        $q="select cash from user where uemail='$_SESSION[login_user]'";
+        $rs=mysqli_query($con,$q);
+        $curcash=mysqli_fetch_array($rs);
         if(isset($_POST['deposit'])){
             $val=$_POST['amount'];
             unset($_POST['deposit']);
@@ -61,6 +63,7 @@
         <div class="demo-options mdl-card mdl-color--white-500 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
           <div class="mdl-card__supporting-text mdl-color-text--teal-500">
             <h3>Manage Cash</h3>
+            <?php echo '<h5> Your Current cash balance is '.$curcash[0].'.</h6>'; ?>
             <!-- Simple Textfield -->
           <form method="post">
             <div class="mdl-textfield mdl-js-textfield">

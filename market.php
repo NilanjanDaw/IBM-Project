@@ -3,28 +3,23 @@
   <script type="text/javascript">
 
   </script>
-  <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
-    <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'header_bar.html' ?>
-    <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'sidebar.php' ?>
-    <main class="mdl-layout__content mdl-color--grey-100">
-      <div class="mdl-grid demo-content">
-    <?php
-      session_start();
-      if(empty($_SESSION['login_user'])){
-        header("location: index.php");
-      }
-      require_once './config.php';
-      $con = mysqli_connect($hostname, $username, $password, $databasename);
-      if (mysqli_connect_errno()) {
-        header("location: error.html");//die("Failed to connect");
-      }
-  ?>
+  <?php
+  session_start();
+  if(empty($_SESSION['login_user'])){
+    header("location: index.php");
+  }
+   ?>
   <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
     <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'header_bar.html' ?>
     <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'sidebar.php' ?>
     <main class="mdl-layout__content mdl-color--grey-100">
       <div class="mdl-grid demo-content">
         <?php
+        require_once './config.php';
+        $con = mysqli_connect($hostname, $username, $password, $databasename);
+        if (mysqli_connect_errno()) {
+          header("location: error.html");//die("Failed to connect");
+        }
         $q1="select cname,baseprice from company";
         $rs1=mysqli_query($con,$q1);
         if(mysqli_errno($con)){
@@ -38,9 +33,7 @@
                   header("location: error.html");exit();
                 }
               while($r2=mysqli_fetch_array($rs2)) {
-                if($cnt==0) {
-                  continue;
-                }else if($cnt==1){
+                if($cnt==1){
                   $prev=$r2[0];break;
                 }
                 $cnt++;
