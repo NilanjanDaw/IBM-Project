@@ -6,22 +6,15 @@
     <?php
         session_start();
         if(empty($_SESSION['login_user'])){
-          header("location: index.php");
+          header("location: index.php");exit();
         }
         require_once './config.php';
         $con = mysqli_connect($hostname, $username, $password, $databasename);
         if (mysqli_connect_errno()) {
           //die("Failed to connect");
-          header("location: error.html");
+          header("location: error.html");exit();
         }
 
-        if($_SESSION['user_type']=='admin'){
-          //show user allocation and Stock Update
-        }else if($_SESSION['user_type']=='pm'){
-          //show only stock update
-        }else{
-          //normal user.
-        }
 
         $u=$_SESSION['login_user'];
         $query="select cash from user where uemail='$u'";
@@ -47,18 +40,18 @@
                 header("location: land.php");exit();
               }
           }else{
-            if($val>$availableCash){
-              echo '<script type="text/javascript">alert("Enough Cash not available.");</script>';
-            }else{
-              $q1="update user set cash='$availableCash'-'$val' where uemail='$u'";
-              $r1=mysqli_query($con,$q1);
-              if(mysqli_errno($con)){
-                header("location: error.php");exit();
+              if($val>$availableCash){
+                  echo '<script type="text/javascript">alert("Enough Cash not available.");</script>';
               }else{
-                header("location: land.php");exit();
-              }
+                  $q1="update user set cash='$availableCash'-'$val' where uemail='$u'";
+                  $r1=mysqli_query($con,$q1);
+                  if(mysqli_errno($con)){
+                    header("location: error.php");exit();
+                  }else{
+                    header("location: land.php");exit();
+                  }
+                }
             }
-          }
         }
 
      ?>
@@ -80,15 +73,43 @@
           </div>
           <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-grid mdl-grid--no-spacing">
             <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
+
               <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
                 <h2 class="mdl-card__title-text">Updates</h2>
               </div>
-              <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                Non dolore elit adipisicing ea reprehenderit consectetur culpa.
-              </div>
-              <div class="mdl-card__actions mdl-card--border">
-                <a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">Read More</a>
-              </div>
+              <?php
+                  if($_SESSION['user_type']=='admin' || $_SESSION['user_type']=='pm'){
+                      $q1="select * from user where allotedto='no'";
+                      $rs1=mysqli_query($con,$q1);
+                      if(mysqli_errno($con)){
+                          header("location: error.html");exit();
+                      }
+                      $cnt=mysqli_num_rows($rs1);
+                      if($cnt!=0){
+                          echo '<div class="mdl-card__supporting-text mdl-color-text--grey-600">
+                            Welcome '.$_SESSION['login_user'].'. There are '.$cnt.' unallocated users.
+                          </div>
+                          <div class="mdl-card__actions mdl-card--border">
+                            <a href="allocateuser.php" class="mdl-button mdl-js-button mdl-js-ripple-effect">Allocate</a>
+                          </div>';
+                      }else{
+                          echo '<div class="mdl-card__supporting-text mdl-color-text--grey-600">
+                            Welcome '.$_SESSION['login_user'].'. Here are the latest updates about stock market.
+                          </div>
+                          <div class="mdl-card__actions mdl-card--border">
+                            <a href="http://economictimes.indiatimes.com/markets/stocks" target="_blank" class="mdl-button mdl-js-button mdl-js-ripple-effect">Read More</a>
+                          </div>';
+                      }
+                  }else{
+                      echo '<div class="mdl-card__supporting-text mdl-color-text--grey-600">
+                        Welcome '.$_SESSION['login_user'].'. Here are the latest updates about stock market.
+                      </div>
+                      <div class="mdl-card__actions mdl-card--border">
+                        <a href="http://economictimes.indiatimes.com/markets/stocks" target="_blank" class="mdl-button mdl-js-button mdl-js-ripple-effect">Read More</a>
+                      </div>';
+                  }
+            ?>
+
             </div>
           </div>
             <div class="demo-charts mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--12-col">
@@ -102,13 +123,12 @@
                   echo mysqli_errno($con).": ".mysqli_error($con);
                   //header("location: error.php");exit();
                 }else{
-                  $row=mysqli_fetch_array($res);
                   $count=mysqli_num_rows($res);
                   if($count==0){
                     echo '<h6>sorry, no transaction found</h6>';
                   }else{
                 ?>
-                    <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable">
+                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
                       <thead>
                         <tr>
                           <th class="mdl-data-table__cell--non-numeric">User Name</th>

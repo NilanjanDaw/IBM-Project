@@ -13,9 +13,66 @@
       exit();
       die("Failed to connect");
     }
+
+    $cname=$_COOKIE['company'];
+    $uname=$_SESSION['login_user'];
     if (array_key_exists('isPurchase', $_POST) && $_POST["isPurchase"] == "true") {
       # Run all your queries here...
       $numberOfStocks = $_POST["stock_num"];
+      unset($_POST["isPurchase"]);
+      buystock($con,$cname,$uname,$numberOfStocks);
+    }
+
+    function buystock($con,$cname,$uname,$stocknum){
+        $qcompany="select * from company where cname='$cname'";
+        $rscompany=mysqli_query($con,$qcompany);
+        if(mysqli_errno($con)){
+            header("location: error.html");exit();
+        }
+        $rowcompany=mysqli_fetch_array($rscompany);
+        if($rowcompany['totalstock'] < $stocknum){
+            echo '<script type="text/javascript">alert("Enough stock not available.");</script>';
+            header("location: purchase.php");exit();
+        }
+        $totalcost=$stocknum * $rowcompany['baseprice'];
+        $quser="select * from user where uemail='$uname'";
+        $rsuser=mysqli_query($con,$quser);
+        if(mysqli_errno($con)){
+            header("location: error.html");
+        }
+        $rowuser=mysqli_fetch_array($rsuser);
+        if($rowuser['cash'] <= $totalcost){
+            echo '<script type="text/javascript">alert("Enough Cash not available.");</script>';
+            header("location: purchase.php");exit();
+        }
+        if($rowuser['allotedto']=="no"){
+          echo '<script type="text/javascript">alert("User not alloted to any Manager.");</script>';
+          header("location: purchase.php");exit();
+        }
+        $qtransaction="insert into utransaction values('$uname','$rowuser[allotedto]',now(),'$cname',1,'$stocknum','$rowcompany[baseprice]')";
+        $rstransaction=mysqli_query($con,$qtransaction);
+        if(mysqli_errno($con)){
+            header("location: error.html");exit();
+        }
+        $newstock=$rowcompany['totalstock']-$stocknum;
+        $newprice=($rowcompany['ratio']*1000)/$newstock;
+        $newcash=$rowuser['cash']-$totalcost;
+        $qstocktran="insert into stockvalue values('$cname','$newprice',now())";
+        $rsstocktran=mysqli_query($con,$qstocktran);
+        if(mysqli_errno($con)){
+            header("location: error.html");exit();
+        }
+        $qupdateuser="update user set cash='$newcash' where uemail='$uname'";
+        $rsupdateuser=mysqli_query($con,$qupdateuser);
+        if(mysqli_errno($con)){
+            header("location: error.html");exit();
+        }
+        $qupdatecompany="update company set totalstock='$newstock',baseprice='$newprice' where cname='$cname'";
+        $rsupdatecompany=mysqli_query($con,$qupdatecompany);
+        if(mysqli_errno($con)){
+            header("location: error.html");exit();
+        }
+        header("location: purchase.php");exit();
     }
 
   ?>

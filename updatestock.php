@@ -35,41 +35,43 @@
           $q1="insert into company values('$cname','$tot','$rat','$base')";
           $rs1=mysqli_query($con,$q1);
           if(mysqli_errno($con)){
-              header("location:error.html");
-              exit();
+              header("location:error.html");exit();
           }
           header("location: updatestock.php");
       }
 
 
       function splitStock($con,$cname,$val){
-          $q1="update company set totalstock=totalstock* '$val' where cname='$cname'";
+          $q1="select * from company where cname='$cname'";
           $rs1=mysqli_query($con,$q1);
           if(mysqli_errno($con)){
-            header("location: error.php");exit();
-          }else {
-            $q2="select totalstock,ratio from company where cname='$cname'";
-            $rs2=mysqli_query($con,$q2);
-            if(mysqli_errno($con)){
-              //do it;
-            }
-            $count=mysqli_num_rows($rs2);
-            if($count>0){
-              $r2=mysqli_fetch_array($rs2);
-              $newprice=($r2['ratio']*1000)/$r2['totalstock'];
-              $q3="insert into `stockvalue` values('$cname','$newprice',now())";
-              $rs3=mysqli_query($con,$q3);
-              if(mysqli_errno($con)){
-                //do it;
-              }
-              $q4="update company set baseprice='$newprice' where cname='$cname'";
-              $rs4=mysqli_query($con,$q4);
-              if(mysqli_errno($con)){
-                //do it;
-              }
-            }
+            header("location: error.html");exit();
+          }
+          $cnt=mysqli_num_rows($rs1);
+          if($cnt==0){
+            echo '<script type="text/javascript">alert("No such company exits.");</script>';
             header("location: updatestock.php");exit();
           }
+          $r1=mysqli_fetch_array($rs1);
+          $newstock=$r1['totalstock']*$val;
+          $newprice=($r1['ratio']*1000)/$newstock;
+          $newratio=$newprice/$r1['baseprice'];
+          $q2="update company set totalstock='$newstock',baseprice='$newprice' where cname='$cname'";
+          $rs2=mysqli_query($con,$q2);
+          if(mysqli_errno($con)){
+            header("location: error.html");exit();
+          }
+          $q3="insert into stockvalue values('$cname','$newprice',now())";
+          $rs3=mysqli_query($con,$q3);
+          if(mysqli_errno($con)){
+            header("location: error.html");exit();
+          }
+          $q4="update utransaction set quantity=quantity*'$val',price=price*'$newratio' where company='$cname'";
+          $rs4=mysqli_query($con,$q4);
+          if(mysqli_errno($con)){
+            header("location: error.html");exit();
+          }
+          header("location: updatestock.php");exit();
       }
       function updateValue($cname,$newval){
         $q1="insert into stockvalue values('$cname','$newval',now())";

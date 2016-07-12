@@ -33,3 +33,9 @@
 - Update Database. Modified tables for stock and company.
 - Updatestock.php
 - Allocateuser.php
+
+## Jul 12, 2016
+@Author Priyanjit Dey
+- Added functionality for stock Transaction.
+- Improved updatestock.php
+- Added functionality for adding/withdrawing cash.
