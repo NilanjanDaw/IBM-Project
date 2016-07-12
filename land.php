@@ -113,8 +113,8 @@
             </div>
           </div>
             <div class="demo-charts mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--12-col">
-              <div class="mdl-card__supporting-text mdl-color-text--teal-500">
-                <h6>Your Transactions</h6>
+              <div class="mdl-card__supporting-text mdl-color-text--black-500">
+                <h6 class="mdl-color-text--teal-500">Your Transactions</h6>
                 <?php
                   $query="select * from utransaction where uemail='$u' order by tdate desc";
                   $res=mysqli_query($con,$query);
@@ -127,7 +127,7 @@
                       echo '<h6>sorry, no transaction found</h6>';
                     }else{
                   ?>
-                      <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                      <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp mdl-cell mdl-cell--12">
                         <thead>
                           <tr>
                             <th class="mdl-data-table__cell--non-numeric">User Name</th>

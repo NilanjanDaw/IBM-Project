@@ -1,6 +1,5 @@
 <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'chart_head.html' ?>
 <body>
-  <script type="text/javascript"></script>
   <?php
     session_start();
     if(empty($_SESSION['login_user'])){
@@ -13,13 +12,15 @@
       exit();
       die("Failed to connect");
     }
-
+    print_r($_POST);
+    echo  array_key_exists('isPurchase', $_POST);
     $cname=$_COOKIE['company'];
     $uname=$_SESSION['login_user'];
     if (array_key_exists('isPurchase', $_POST) && $_POST["isPurchase"] == "true") {
       # Run all your queries here...
       $numberOfStocks = $_POST["stock_num"];
       unset($_POST["isPurchase"]);
+      echo '<script type= "text/javascript">console.log("Test");</script>';
       buystock($con,$cname,$uname,$numberOfStocks);
     }
 
@@ -41,7 +42,9 @@
             header("location: error.html");
         }
         $rowuser=mysqli_fetch_array($rsuser);
+        echo "string";
         if($rowuser['cash'] <= $totalcost){
+          echo "Hello";
             echo '<script type="text/javascript">alert("Enough Cash not available.");</script>';
             header("location: purchase.php");exit();
         }
@@ -62,7 +65,7 @@
         if(mysqli_errno($con)){
             header("location: error.html");exit();
         }
-        $qupdateuser="update user set cash='$newcash' where uemail='$uname'";
+        $qupdateuser="update user set cash=cash - '$newcash' where uemail='$uname'";
         $rsupdateuser=mysqli_query($con,$qupdateuser);
         if(mysqli_errno($con)){
             header("location: error.html");exit();
