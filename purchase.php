@@ -62,7 +62,7 @@
         if(mysqli_errno($con)){
             header("location: error.html");exit();
         }
-        $qupdateuser="update user set cash='$newcash' where uemail='$uname'";
+        $qupdateuser="update user set cash=cash-'$newcash' where uemail='$uname'";
         $rsupdateuser=mysqli_query($con,$qupdateuser);
         if(mysqli_errno($con)){
             header("location: error.html");exit();

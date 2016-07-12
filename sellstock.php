@@ -45,7 +45,7 @@
               header("location: error.html");exit();
           }
           $rowcompany=mysqli_fetch_array($rscompany);
-          $newcash=$rowcompany['baseprice']*$stocksell;
+          $newcash=$rowcompany['baseprice'] * $stocksell;
           $newstock=$rowcompany['totalstock']+$stocksell;
           $newprice=($rowcompany['ratio']*1000)/$newstock;
 
@@ -66,7 +66,7 @@
               header("location: error.html");exit();
           }
 
-          $qupdateuser="update user set cash='$newcash' where uemail='$uname'";
+          $qupdateuser="update user set cash=cash+'$newcash' where uemail='$uname'";
           $rsupdateuser=mysqli_query($con,$quser);
           if(mysqli_errno($con)){
               header("location: error.html");exit();

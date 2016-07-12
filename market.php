@@ -3,6 +3,11 @@
   <script type="text/javascript">
 
   </script>
+  <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+    <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'header_bar.html' ?>
+    <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'sidebar.php' ?>
+    <main class="mdl-layout__content mdl-color--grey-100">
+      <div class="mdl-grid demo-content">
     <?php
       session_start();
       if(empty($_SESSION['login_user'])){
@@ -20,13 +25,7 @@
         header("location: error.html");exit();
       }
 
-  ?>
-  <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
-    <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'header_bar.html' ?>
-    <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'sidebar.php' ?>
-    <main class="mdl-layout__content mdl-color--grey-100">
-      <div class="mdl-grid demo-content">
-        <?php
+
             while($r1=mysqli_fetch_array($rs1)) {
                 $q2="select price from stockvalue where company='$r1[0]' order by stime desc";
                 $rs2=mysqli_query($con,$q2);
