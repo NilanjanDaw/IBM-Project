@@ -24,7 +24,7 @@
       $temp = array();
       $temp = array(
         array('v' => (int)$i),
-        array('v' => (int)$row['price'])
+        array('v' => (float)$row['price'])
       );
       $rows[] = array('c' => $temp);
       $i++;

@@ -49,7 +49,7 @@
       $t[] = array('v' => (int)$i);
       for ($j = 0; $j < count($company); $j++) {
         if (array_search($row['company'], $company) == $j)
-          $t[] = array('v' => (int)$row['price']);
+          $t[] = array('v' => (float)$row['price']);
         else {
           $t[] = array('v' => null);
         }

@@ -84,35 +84,36 @@
       <div class="mdl-grid demo-content">
       </div>
 
-  <div class="demo-charts mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--12-col">
-    <div class="mdl-card__supporting-text mdl-color-text--teal-500">
-      <h2>Company Shares</h2>
-    </div>
-      <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-        <thead>
-          <tr>
-            <th class="mdl-data-table__cell--non-numeric">Company</th>
-            <th class="mdl-data-table__cell--non-numeric">Total Share</th>
-            <th class="mdl-data-table__cell--non-numeric">Ratio</th>
-            <th class="mdl-data-table__cell--non-numeric">Price</th>
-          </tr>
-        </thead>
-        <tbody>
-        <?php $q1="select * from company";
-              $rs1=mysqli_query($con,$q1);
-              if(mysqli_errno($con)){
-                header("location: error.php");exit();
-              }
-              while($r1=mysqli_fetch_array($rs1)){
-                echo '<tr>
-                  <td class="mdl-data-table__cell--non-numeric">'.$r1[0].'</td>
-                  <td>'.$r1[1].'</td>
-                  <td>'.$r1[2].'</td>
-                  <td>'.$r1[3].'</td>
-                </tr>';
-              }
-              echo "</tbody>
-              </table>";?>
+      <div class="demo-charts mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--12-col">
+        <div class="mdl-card__supporting-text mdl-color-text--teal-500">
+          <h2>Company Shares</h2>
+          <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp mdl-cell mdl-cell--12-col" id="company_share">
+            <thead>
+              <tr>
+                <th class="mdl-data-table__cell--non-numeric">Company</th>
+                <th class="mdl-data-table__cell--non-numeric">Total Share</th>
+                <th class="mdl-data-table__cell--non-numeric">Ratio</th>
+                <th class="mdl-data-table__cell--non-numeric">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+            <?php $q1="select * from company";
+                  $rs1=mysqli_query($con,$q1);
+                  if(mysqli_errno($con)){
+                    header("location: error.php");exit();
+                  }
+                  while($r1=mysqli_fetch_array($rs1)){
+                    echo '<tr>
+                      <td class="mdl-data-table__cell--non-numeric">'.$r1[0].'</td>
+                      <td>'.$r1[1].'</td>
+                      <td>'.$r1[2].'</td>
+                      <td>'.$r1[3].'</td>
+                    </tr>';
+                  }
+                  echo "</tbody>
+                  </table>";?>
+
+              </div>
         </div>
 
         <div class="demo-separator mdl-cell--1-col"></div>
@@ -122,7 +123,7 @@
             <!-- Simple Textfield -->
           <form method="post">
             <div class="mdl-textfield mdl-js-textfield">
-              <input class="mdl-textfield__input" type="text" id="cname" name="cname">
+              <input class="mdl-textfield__input" type="text" id="comname" name="cname">
               <label class="mdl-textfield__label" for="sample1">Company</label>
             </div>
             <div class="mdl-textfield mdl-js-textfield">
@@ -145,7 +146,7 @@
             <!-- Simple Textfield -->
           <form method="post">
             <div class="mdl-textfield mdl-js-textfield">
-              <input class="mdl-textfield__input" type="text" id="cname2" name="cname2">
+              <input class="mdl-textfield__input" type="text" id="comname2" name="cname2">
               <label class="mdl-textfield__label" for="sample2">Company</label>
             </div>
             <div class="mdl-textfield mdl-js-textfield">
@@ -164,7 +165,30 @@
           </form>
           </div>
         </div>
+        <script type="text/javascript">
+          function addRowHandlers() {
+              var table = document.getElementById("company_share");
+              var rows = table.getElementsByTagName("tr");
+              var companySplit = document.getElementById("comname");
+              var stockAdd = document.getElementById("comname2");
+              for (i = 0; i < rows.length; i++) {
+                  var currentRow = table.rows[i];
+                  var createClickHandler =
+                      function(row)
+                      {
+                          return function() {
+                                                  var cell = row.getElementsByTagName("td")[0];
+                                                  var id = cell.innerHTML;
+                                                  companySplit.value = id;
+                                                  stockAdd.value = id;
+                                           };
+                      };
 
+                  currentRow.onclick = createClickHandler(currentRow);
+              }
+            }
+            window.onload = addRowHandlers();
+        </script>
     </main>
   </div>
   <script src="../../material.min.js"></script>

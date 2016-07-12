@@ -49,8 +49,8 @@
           <div class="demo-charts mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--12-col">
             <div class="mdl-card__supporting-text mdl-color-text--teal-500">
               <h2>Unalloted Users</h2>
-            </div>
-              <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+
+              <table class="mdl-data-table mdl-js-data-table" id="allocate_table">
                 <thead>
                   <tr>
                     <th class="mdl-data-table__cell--non-numeric">Email</th>
@@ -71,6 +71,7 @@
                       }
                       echo "</tbody>
                       </table>";?>
+              </div>
           </div>
 
           <div class="demo-separator mdl-cell--1-col"></div>
@@ -89,16 +90,37 @@
               </div>
 
               <div class="mdl-card__actions mdl-card--border">
-                <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--teal-500" name="allot">Allocate</button>
+                <button type="submit" class="mdl-button mdl-button--raised mdl-js-button mdl-js-ripple-effect mdl-color-text--teal-500" name="allot">Allocate</button>
                 <div class="mdl-layout-spacer"></div>
               </div>
             </form>
             </div>
           </div>
+          <script type="text/javascript">
+          function addRowHandlers() {
+              var table = document.getElementById("allocate_table");
+              var rows = table.getElementsByTagName("tr");
+              var customerAllocate = document.getElementById("cname");
+              for (i = 0; i < rows.length; i++) {
+                  var currentRow = table.rows[i];
+                  var createClickHandler =
+                      function(row)
+                      {
+                          return function() {
+                                                  var cell = row.getElementsByTagName("td")[0];
+                                                  var id = cell.innerHTML;
+                                                  customerAllocate.value = id;
+                                           };
+                      };
 
-
+                  currentRow.onclick = createClickHandler(currentRow);
+              }
+            }
+            window.onload = addRowHandlers();
+          </script>
       </main>
   </div>
+
 <script src="../../material.min.js"></script>
 </body>
 </html>
