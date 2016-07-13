@@ -25,6 +25,11 @@
       }
 
   ?>
+  <style>
+  .demo-charts:hover {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  }
+  </style>
   <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
     <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'header_bar.html' ?>
     <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'sidebar.php' ?>
@@ -33,18 +38,20 @@
           <div class="demo-cards mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid mdl-grid--no-spacing">
             <!--<div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--12-col-desktop">-->
               <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                <h2 class="mdl-card__title-text">Updates</h2>
+                <h2 class="mdl-card__title-text">Message Updates</h2>
               </div>
               <?php
               $row = 0;
               while ($row = mysqli_fetch_assoc($res)) {
                 echo '
-                  <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                    <div class="mdl-cell mdl-cell--3-col">From: '.$row['fromuser'].' </div>
-                    <div class="mdl-cell mdl-cell--3-col">'.
+                <div class="demo-charts mdl-color--white mdl-shadow--8dp mdl-cell mdl-cell--12-col mdl-grid">
+                    <div class="mdl-card__supporting-text mdl-color-text--black-500">From: '.$row['fromuser'].'
+                    <br />'.
                     $row['msgbody'].'
-                    </div>
-                  </div>';
+                  </div>
+                  <br />
+                  <hr />
+                </div>';
                }
                ?>
             </div>
@@ -53,6 +60,8 @@
             <div class="demo-options mdl-card mdl-color--white-500 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
               <div class="mdl-card__supporting-text mdl-color-text--teal-500">
                 <h3>Send Message</h3>
+              </div>
+              <div class="mdl-card__supporting-text mdl-color-text--grey-600">
                 <!-- Simple Textfield -->
               <form action="sentbox.php" method="post">
                 <div class="mdl-textfield mdl-js-textfield">
