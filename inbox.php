@@ -35,26 +35,7 @@
     <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'sidebar.php' ?>
     <main class="mdl-layout__content mdl-color--grey-100">
         <div class="mdl-grid demo-content">
-          <div class="demo-cards mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid mdl-grid--no-spacing">
-            <!--<div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--12-col-desktop">-->
-              <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                <h2 class="mdl-card__title-text">Message Updates</h2>
-              </div>
-              <?php
-              $row = 0;
-              while ($row = mysqli_fetch_assoc($res)) {
-                echo '
-                <div class="demo-charts mdl-color--white mdl-shadow--8dp mdl-cell mdl-cell--12-col mdl-grid">
-                    <div class="mdl-card__supporting-text mdl-color-text--black-500">From: '.$row['fromuser'].'
-                    <br />'.
-                    $row['msgbody'].'
-                  </div>
-                  <br />
-                  <hr />
-                </div>';
-               }
-               ?>
-            </div>
+
 
             <div class="demo-separator mdl-cell--1-col"></div>
             <div class="demo-options mdl-card mdl-color--white-500 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">

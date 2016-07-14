@@ -39,3 +39,7 @@
 - Added functionality for stock Transaction.
 - Improved updatestock.php
 - Added functionality for adding/withdrawing cash.
+
+## Jul 14, 2016
+@Author Priyanjit Dey
+- Added Help, About us pages.
