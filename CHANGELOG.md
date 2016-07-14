@@ -29,6 +29,12 @@
 - Transaction table added to landing Page
 
 ## Jul 11, 2016
+@Author Nilanjan Daw
+- Purchase Page updated
+- Created System Issue Tracker
+- Bug Fix
+
+## Jul 11, 2016
 @Author Priyanjit Dey
 - Update Database. Modified tables for stock and company.
 - Updatestock.php
@@ -39,6 +45,17 @@
 - Added functionality for stock Transaction.
 - Improved updatestock.php
 - Added functionality for adding/withdrawing cash.
+
+##Jul 12, 2016
+@Author Nilanjan Daw
+- UI improvements
+- Bug Fixes
+
+## Jul 14, 2016
+@Author Nilanjan Daw
+- Redesigned Inbox and Outbox
+- Deployed Message sending mechanism
+- UI improvements
 
 ## Jul 14, 2016
 @Author Priyanjit Dey

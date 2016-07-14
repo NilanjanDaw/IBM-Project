@@ -60,21 +60,28 @@
       <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'sidebar.php' ?>
       <main class="mdl-layout__content mdl-color--grey-100">
         <div class="mdl-grid demo-content">
-          <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-            <!--<label class="">ALL HAIL!!! Enter folio details </label>-->
+          <div class="demo-charts mdl-color--white mdl-shadow--8dp mdl-cell mdl-cell--12-col mdl-grid">
+            <div class="mdl-card__supporting-text mdl-color-text--teal-500 mdl-cell mdl-cell--12-col mdl-grid">
+              <h5>Portfolio Information<h5>
+            </div>
+            <div class="mdl-card__supporting-text mdl-color-text--black-500 mdl-cell mdl-cell--8-col ">
             <?php
                 $q1="select * from user where uemail='".$_SESSION['login_user']."'";
                 $rs1=mysqli_query($con, $q1);
                 if(mysqli_errno($con)){
                     header("location: error.html");exit();
                 } ?>
-                <div class="mdl-grid demo-content">
               <?php
                 while($row = mysqli_fetch_assoc($rs1)) {
-                  print_r($row);
-                  
+                  echo '<h6><b> User ID:</b> '.$row["uemail"].'</h6>';
+                  echo "<br /><b>User Name:</b> ".$row["uname"];
+                  echo "<br /><b>Cash Balance:</b> $".$row["cash"];
+                  echo "<br /><b>Allocated To:</b> ".$row["allotedto"];
                 }
               ?>
+              </div>
+              <div class="mdl-card__media mdl-shadow--4dp">
+                <img src="./images/user.jpg" height="180px" width="180px"></img>
               </div>
 
           </div>
