@@ -80,7 +80,7 @@
                 }
               ?>
               </div>
-              <div class="mdl-card__media mdl-shadow--4dp">
+              <div class="mdl-card__media mdl-shadow--6dp">
                 <img src="./images/user.jpg" height="180px" width="180px"></img>
               </div>
 

@@ -12,8 +12,6 @@
       exit();
       die("Failed to connect");
     }
-    print_r($_POST);
-    echo  array_key_exists('isPurchase', $_POST);
     $cname=$_COOKIE['company'];
     $uname=$_SESSION['login_user'];
     if (array_key_exists('isPurchase', $_POST) && $_POST["isPurchase"] == "true") {
@@ -42,9 +40,7 @@
             header("location: error.html");
         }
         $rowuser=mysqli_fetch_array($rsuser);
-        echo "string";
         if($rowuser['cash'] <= $totalcost){
-          echo "Hello";
             echo '<script type="text/javascript">alert("Enough Cash not available.");</script>';
             header("location: purchase.php");exit();
         }
@@ -127,20 +123,6 @@
     <main class="mdl-layout__content mdl-color--grey-100">
       <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
         <!--<label class="">ALL HAIL!!! Enter folio details </label>-->
-        <?php
-            $q1="select * from user where uemail='".$_SESSION['login_user']."'";
-            $rs1=mysqli_query($con, $q1);
-            if(mysqli_errno($con)){
-                header("location: error.html");exit();
-            } ?>
-            <div class="mdl-grid demo-content">
-          <?php
-            while($row = mysqli_fetch_assoc($rs1)) {
-              print_r($row);
-
-            }
-          ?>
-          </div>
 
       </div>
       <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
@@ -153,15 +135,25 @@
         <div class="mdl-card__supporting-text mdl-color-text--teal-500">
           <h3>Purchase Stock</h3>
         <?php
-        $row = 0;
-        $query = "select price from stockvalue where company ='".$_COOKIE['company']."' order by stime desc limit 1;";
-        $res = mysqli_query($con, $query);
-        while ($row = mysqli_fetch_assoc($res)) {
-          echo '
-            <div class="mdl-card__supporting-text mdl-color-text--teal-500">
-              <div class="mdl-cell mdl-cell--3-col"><h5>Current Price '.$row['price'].' </h5></div>
-            </div>';
-         }
+            $row = 0;
+            $query = "select price from stockvalue where company ='".$_COOKIE['company']."' order by stime desc limit 1;";
+            $res = mysqli_query($con, $query);
+            while ($row = mysqli_fetch_assoc($res)) {
+              echo '
+                <div class="mdl-card__supporting-text mdl-color-text--teal-500">
+                  <div class="mdl-cell mdl-cell--3-col"><h5>Current Price '.$row['price'].' </h5></div>';
+             }
+             $q1="select * from user where uemail='".$_SESSION['login_user']."'";
+             $rs1=mysqli_query($con, $q1);
+             if(mysqli_errno($con)){
+                 header("location: error.html");exit();
+             }
+             while($row = mysqli_fetch_assoc($rs1)) {
+               echo '
+                   <div class="mdl-cell mdl-cell--3-col">Credit Balance: $'.$row['cash'].'</div>
+                  </div>';
+
+             }
          $_COOKIE['stock_price'] = $row['price'];
          ?>
            <form action="purchase.php" method="post" name="purchase_stocks">
