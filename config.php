@@ -1,6 +1,6 @@
 <?php
-    $databasename = "ad_e6d8eb1c641e824";
-    $username = "bded21807cc902";
-    $password = "f30c88d7";
+    $databasename = "ad_bf8e5eecc119177";
+    $username = "b9c491148d5ef2";
+    $password = "505985af";
     $hostname = "us-cdbr-iron-east-04.cleardb.net";
  ?>

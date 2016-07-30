@@ -2,10 +2,10 @@ applications:
 - path: .
   memory: 128M
   instances: 1
-  domain: eu-gb.mybluemix.net
+  domain: mybluemix.net
   name: StockHawk
-  host: stockhawk
+  host: StockHawk
   disk_quota: 1024M
   services:
-  - ClearDB MySQL Database-nd
+  - ClearDB MySQL Database-4f
   buildpack: php_buildpack
