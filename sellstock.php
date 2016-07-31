@@ -176,7 +176,7 @@
           <div class="mdl-card__supporting-text mdl-color-text--teal-500">
             <h3>Sell Stock</h3>
             <!-- Simple Textfield -->
-          <form method="post">
+          <form method="post" name="sell_stock">
             <div class="mdl-textfield mdl-js-textfield">
               <input class="mdl-textfield__input" type="text" id="cname" name="cname">
               <label class="mdl-textfield__label" for="sample1">Company</label>
@@ -187,12 +187,18 @@
             </div>
 
             <div class="mdl-card__actions mdl-card--border">
-              <button type="submit" class="mdl-button mdl-button--raised mdl-js-button mdl-js-ripple-effect mdl-color-text--teal-500" name="split">Sell</button>
+              <button type="button" class="mdl-button mdl-button--raised mdl-js-button mdl-js-ripple-effect mdl-color-text--teal-500" name="split" onclick="sellStock();">Sell</button>
               <div class="mdl-layout-spacer"></div>
             </div>
           </form>
           </div>
         </div>
+        <div id="toast" class="mdl-js-snackbar mdl-snackbar">
+          <div class="mdl-snackbar__text"></div>
+          <button class="mdl-snackbar__action" type="button"></button>
+        </div>
+
+
         <script type="text/javascript">
         function addRowHandlers() {
             var table = document.getElementById("sell");
@@ -215,6 +221,22 @@
             }
           }
           window.onload = addRowHandlers();
+
+          function sellStock() {
+            var company= document.getElementById('cname').value;
+            var stock = document.getElementById('newval').value;
+            var snackbarContainer = document.getElementById('toast');
+            stock = stock.trim();
+            company.trim();
+            if (!Number.isNaN(parseInt(stock)) && !(company == '')) {
+              document.sell_stock.submit();
+            } else {
+              document.getElementById('cname').value="";
+              document.getElementById('newval').value="";
+              var data = "Invalid Input! Please try again!";
+              alert(data);
+            }
+          }
         </script>
     </main>
   </div>

@@ -8,13 +8,7 @@
 
 <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'land_chart.html' ?>
   <body>
-    <script type="text/javascript">
-
-    </script>
     <?php
-        /*
-          Check if session is expired or not. If expired, redirect to index.php.
-        */
         session_start();
         if(empty($_SESSION['login_user'])){
           header("location: index.php");exit();

@@ -61,6 +61,15 @@
 @Author Priyanjit Dey
 - Added Help, About us pages.
 
+## Jul 30, 2016
+@Author Nilanjan Daw
+-Updated configuration files according to new Bluemix Account
+
 ## Jul 31, 2016
 @Author Priyanjit Dey
 - Added Documentation
+
+## Jul 31, 2016
+@Author Nilanjan Daw
+- Partial Form Validation(PS Note to others. DONOT add Documentation to any pure PHP, header or configuration files)
+-Added Documentation
