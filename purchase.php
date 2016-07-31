@@ -1,17 +1,28 @@
+<!--
+    ### STOCKHAWK ###
+    purchase.php :
+    Allows user to buy stocks of a company.
+
+-->
 <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'chart_head.html' ?>
 <body>
   <?php
+    /*
+        Check if session exists. If not, then redirect to index.php.
+    */
     session_start();
     if(empty($_SESSION['login_user'])){
       header("location: index.php");
     }
     require_once './config.php';
-    $con = mysqli_connect($hostname, $username, $password, $databasename);
+    $con = mysqli_connect($hostname, $username, $password, $databasename);      //Setup Connection with database.
     if (mysqli_connect_errno()) {
       header("location: error.php");
       exit();
       die("Failed to connect");
     }
+
+
     $cname=$_COOKIE['company'];
     $uname=$_SESSION['login_user'];
     if (array_key_exists('isPurchase', $_POST) && $_POST["isPurchase"] == "true") {
@@ -21,18 +32,35 @@
       echo '<script type= "text/javascript">console.log("Test");</script>';
       buystock($con,$cname,$uname,$numberOfStocks);
     }
+    /*
+      Method - buystock
+      Perform stock transaction. Users buy stock.
 
+      Arguements -
+            $con      - Connection Variable
+            $cname    - Name of company
+            $uname    - Username of user
+            $stocknum - Number of stocks.
+
+      Returns -
+            Null
+    */
     function buystock($con,$cname,$uname,$stocknum){
+        // company details.
         $qcompany="select * from company where cname='$cname'";
         $rscompany=mysqli_query($con,$qcompany);
         if(mysqli_errno($con)){
             header("location: error.html");exit();
         }
         $rowcompany=mysqli_fetch_array($rscompany);
+
+        //Checking if Enough stock is available.
         if($rowcompany['totalstock'] < $stocknum){
             echo '<script type="text/javascript">alert("Enough stock not available.");</script>';
             header("location: purchase.php");exit();
         }
+
+        //Checking if enough cash is available.
         $totalcost=$stocknum * $rowcompany['baseprice'];
         $quser="select * from user where uemail='$uname'";
         $rsuser=mysqli_query($con,$quser);
@@ -48,11 +76,14 @@
           echo '<script type="text/javascript">alert("User not alloted to any Manager.");</script>';
           header("location: purchase.php");exit();
         }
+
+        //Inserting record in utransaction table.
         $qtransaction="insert into utransaction values('$uname','$rowuser[allotedto]',now(),'$cname',1,'$stocknum','$rowcompany[baseprice]')";
         $rstransaction=mysqli_query($con,$qtransaction);
         if(mysqli_errno($con)){
             header("location: error.html");exit();
         }
+        //Calculating new price per stock.
         $newstock=$rowcompany['totalstock']-$stocknum;
         $newprice=($rowcompany['ratio']*1000)/$newstock;
         $newcash=$rowuser['cash']-$totalcost;
@@ -62,12 +93,15 @@
             header("location: error.html");exit();
         }
 
+        // Updating the user.
         $qupdateuser="update user set cash='$newcash' where uemail='$uname'";
 
         $rsupdateuser=mysqli_query($con,$qupdateuser);
         if(mysqli_errno($con)){
             header("location: error.html");exit();
         }
+
+        //Updaing the company attributes.
         $qupdatecompany="update company set totalstock='$newstock',baseprice='$newprice' where cname='$cname'";
         $rsupdatecompany=mysqli_query($con,$qupdatecompany);
         if(mysqli_errno($con)){
@@ -135,6 +169,7 @@
         <div class="mdl-card__supporting-text mdl-color-text--teal-500">
           <h3>Purchase Stock</h3>
         <?php
+            //Display the stock details.
             $row = 0;
             $query = "select price from stockvalue where company ='".$_COOKIE['company']."' order by stime desc limit 1;";
             $res = mysqli_query($con, $query);

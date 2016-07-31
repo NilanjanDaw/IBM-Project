@@ -1,3 +1,10 @@
+<!--
+    ### STOCKHAWK ###
+    register.php :
+    New user registration page.
+
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,10 +24,11 @@
 
 <body>
   <?php
+
       require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'config.php';
-      $con=mysqli_connect($hostname,$username,$password,$databasename);
+      $con=mysqli_connect($hostname,$username,$password,$databasename);         //Setup connection with database.
       if(mysqli_connect_errno()){
-        header("location: error.html");//die("Connection Error. Please try again in some time.");
+        header("location: error.html");
       }else{
         //echo '<script type="text/javascript">alert("Connection Set.");</script>';
       }
@@ -32,16 +40,29 @@
         $repass=$_POST['repassword'];
         $pass=$_POST['password'];
 
-        //$uname=mysqli_real_escape_string($databasename,$_POST['username']);
-        //$pass=mysqli_real_escape_string($databasename,$_POST['password']);
         performRegister($uemail,$uname,$pass,$repass,$con);
       }
 
+      /*
+          Method - performRegister
+          Registers a new user.
+
+          Arguements -
+                $con        - Connection Variable
+                $uemail     - User Email
+                $uname      - User Name
+                $pass       - password
+                $repass     - password
+
+          Returns -
+                Null
+      */
       function performRegister($uemail,$uname,$pass,$repass,$con){
         if($pass==$repass){
           $cash=0;$isadmin=false;$ispm=false;$allot='no';
           $query="select uemail from user where uemail='$uemail'";
           $res=mysqli_query($query);
+          // Checking if username already exists.
           if(res>=1){
             echo '<script type="text/javascript">alert("Email ID is already registered.");</script>';
             header("refresh:5;url=register.php");
@@ -51,17 +72,6 @@
             $insres=mysqli_query($con,$insquery);
           }
           $retval=true;
-          /*$to = $uemail;
-          $subject = "Welcome";
-
-          $message = "<b>Hope you will have a great time</b>";
-          $message .= "<h1>This is headline.</h1>";
-
-          $header = "From:nilanjandaw14@gmail.com \r\n";
-          $header .= "MIME-Version: 1.0\r\n";
-          $header .= "Content-type: text/html\r\n";
-
-          $retval = mail ($to,$subject,$message,$header);*/
 
           if($retval==true){
             header("location: welcome.php");

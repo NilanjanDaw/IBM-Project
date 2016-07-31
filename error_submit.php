@@ -1,15 +1,26 @@
+<!--
+    ### STOCKHAWK ###
+    error_submit.php :
+    Allows user to report any error in the website.
+
+-->
+
+
 <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'header.html' ?>
 <body>
   <script type="text/javascript">
 
   </script>
   <?php
+      /*
+          Check if the existing session expired or not. If expired, redirect to index.php
+      */
       session_start();
       if(empty($_SESSION['login_user'])){
         header("location: index.php");
       }
       require_once './config.php';
-      $con = mysqli_connect($hostname, $username, $password, $databasename);
+      $con = mysqli_connect($hostname, $username, $password, $databasename);    // Setup connection with the database
       if (mysqli_connect_errno()) {
         //die("Failed to connect");
         header("location: error.html");
@@ -17,6 +28,10 @@
 
       $u=$_SESSION['login_user'];
 
+
+      /*
+          Checks if the button is set or not. If set, a query is executed to insert error message into the database.
+      */
       if (isset($_POST["error_button"])) {
         $message = $_POST["error_msg"];
         $time = time();

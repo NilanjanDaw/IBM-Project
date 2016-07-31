@@ -60,3 +60,7 @@
 ## Jul 14, 2016
 @Author Priyanjit Dey
 - Added Help, About us pages.
+
+## Jul 31, 2016
+@Author Priyanjit Dey
+- Added Documentation

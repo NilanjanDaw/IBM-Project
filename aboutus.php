@@ -1,15 +1,25 @@
+<!--
+    ### STOCKHAWK ###
+    Aboutus.php:
+    Shows information in the About page. Contains the information in simple text format.
+
+-->
+
 <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'header.html' ?>
 <body>
   <script type="text/javascript">
 
   </script>
   <?php
+      /*
+          Check if the existing session expired or not. If expired, redirect to login page.
+      */
       session_start();
       if(empty($_SESSION['login_user'])){
         header("location: index.php");
       }
       require_once './config.php';
-      $con = mysqli_connect($hostname, $username, $password, $databasename);
+      $con = mysqli_connect($hostname, $username, $password, $databasename);      //Connection setup with database.
       if (mysqli_connect_errno()) {
         //die("Failed to connect");
         header("location: error.html");
@@ -31,6 +41,7 @@
             <h2 class="mdl-card__title-text">Help and Information</h2>
           </div>
           <?php
+              //printing out the information 
               echo '
               <div class="demo-charts mdl-color--white mdl-shadow--8dp mdl-cell mdl-cell--12-col mdl-grid">
                 <div class="mdl-card__supporting-text mdl-color-text--black-500">

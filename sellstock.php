@@ -1,15 +1,24 @@
+<!--
+    ### STOCKHAWK ###
+    sellstock.php :
+    Sell available stock.
+
+-->
+
 <html>
 <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'land_chart.html' ?>
 <body>
   <?php
+      /*
+          Check if session exists. If not, redirect to index.php
+      */
       session_start();
       if(empty($_SESSION['login_user'])){
         header("location: index.php");
       }
       require_once './config.php';
-      $con = mysqli_connect($hostname, $username, $password, $databasename);
+      $con = mysqli_connect($hostname, $username, $password, $databasename);    //Setup connection with database.
       if (mysqli_connect_errno()) {
-        //die("Failed to connect");
         header("location: error.html");exit();
       }
 
@@ -19,7 +28,22 @@
           perfomSell($con,$_SESSION['login_user'],$cname,$stocksell);
       }
 
+
+      /*
+          Method - perfomSell
+          Sell stock.
+
+          Arguements -
+                  $con          - Connection Variable
+                  $uname        - Username
+                  $cname        - Company Name
+                  $stocksell    - Number of stocks to sell.
+
+          Returns -
+                  Null
+      */
       function perfomSell($con,$uname,$cname,$stocksell){
+          //Calculating the number of stock of the company the user has.
           $q1="select quantity,ttype from utransaction where uemail='$uname' and company='$cname'";
           $rs1=mysqli_query($con,$q1);
           if(mysqli_errno($con)){
@@ -39,6 +63,8 @@
           if($stocksell==0){
               header("location: sellstock.php");exit();
           }
+
+          // Company details.
           $qcompany="select * from company where cname='$cname'";
           $rscompany=mysqli_query($con,$qcompany);
           if(mysqli_errno($con)){
@@ -46,7 +72,7 @@
           }
           $rowcompany=mysqli_fetch_array($rscompany);
 
-
+          //User detals.
           $quser="select * from user where uemail='$uname'";
           $rsuser=mysqli_query($con,$quser);
           if(mysqli_errno($con)){
@@ -54,6 +80,7 @@
           }
           $rowuser=mysqli_fetch_array($rsuser);
 
+          // Calcuting new stock of the company stock.
           $newcash=($rowcompany['baseprice'] * $stocksell)+$rowuser['cash'] ;
           $newstock=$rowcompany['totalstock']+$stocksell;
           $newprice=($rowcompany['ratio']*1000)/$newstock;
@@ -62,24 +89,28 @@
             header("location: sellstock.php");exit();
           }
 
+          //Updating transaction table.
           $qtransaction="insert into utransaction values('$uname','$rowuser[allotedto]',now(),'$cname',0,'$stocksell','$rowcompany[baseprice]')";
           $rstransaction=mysqli_query($con,$qtransaction);
           if(mysqli_errno($con)){
               header("location: error.html");exit();
           }
 
+          //Updating the amount of cash the user has.
           $qupdateuser="update user set cash= '$newcash' where uemail='$uname'";
           $rsupdateuser=mysqli_query($con,$qupdateuser);
           if(mysqli_errno($con)){
               header("location: error.html");exit();
           }
 
+          //Updating totalstock and baseprice of company
           $qupdatecompany="update company set totalstock='$newstock',baseprice='$newprice' where cname='$cname'";
           $rsupdatecompany=mysqli_query($con,$qupdatecompany);
           if(mysqli_errno($con)){
               header("location: error.html");exit();
           }
 
+          // Recording the change in price in stockvalue.
           $qstocktran="insert into stockvalue values('$cname','$newprice',now())";
           $rsstocktran=mysqli_query($con,$qstocktran);
           if(mysqli_errno($con)){
@@ -105,7 +136,9 @@
               </tr>
             </thead>
             <tbody>
-            <?php $q1="select cname from company";
+            <?php
+                  // List all the available shares.
+                  $q1="select cname from company";
                   $rs1=mysqli_query($con,$q1);
                   if(mysqli_errno($con)){
                     header("location: error.php");exit();

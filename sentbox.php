@@ -1,4 +1,9 @@
+<!--
+    ### STOCKHAWK ###
+    sentbox.php :
+    List all the messages sent by the user.
 
+-->
 <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'header.html' ?>
 <body>
   <style>
@@ -7,6 +12,9 @@
   }
   </style>
 <?php
+      /*
+        Check if session exists. If not, redirect to index.php
+      */
       session_start();
       if(empty($_SESSION['login_user'])){
         header("location: index.php");
@@ -18,7 +26,7 @@
       }
 
       /*
-        Sending message to server. Nilanjan Says Hello! :p
+        Sending message to server.
       */
       if (array_key_exists('message', $_POST)) {
         # code...
@@ -32,6 +40,9 @@
         }
       }
 
+      /*
+          Query to insert the message in the database.
+      */
       $u=$_SESSION['login_user'];
       $query="select msgbody,touser from message where fromuser='$u';";
       $res=mysqli_query($con,$query);
@@ -51,6 +62,7 @@
             </div>
               <?php
               $row=0;
+              // Printing all the messages
               while($row=mysqli_fetch_array($res)) {
 
                 echo '

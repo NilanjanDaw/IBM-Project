@@ -1,3 +1,9 @@
+<!--
+    ### STOCKHAWK ###
+    inbox.php :
+    Provides functionality to send messages and keep track of all received messages.
+
+-->
 
 <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'header.html' ?>
 <body>
@@ -5,17 +11,23 @@
 
   </script>
   <?php
+      /*
+          Check if the existing session expired or not. If expired, redirect to index.php.
+      */
       session_start();
       if(empty($_SESSION['login_user'])){
         header("location: index.php");
       }
       require_once './config.php';
-      $con = mysqli_connect($hostname, $username, $password, $databasename);
+      $con = mysqli_connect($hostname, $username, $password, $databasename);    // Setup connection with the database.
       if (mysqli_connect_errno()) {
         //die("Failed to connect");
         header("location: error.html");
       }
 
+      /*
+          List all the messages received by this user.
+      */
       $u=$_SESSION['login_user'];
       $query="select msgbody,fromuser from message where touser='$u';";
       $res=mysqli_query($con,$query);

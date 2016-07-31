@@ -1,3 +1,11 @@
+<!--
+    ### STOCKHAWK ###
+    index.php :
+    Login page. Allows user to login to their account by providing correct username and password.
+
+-->
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,6 +25,9 @@
 
 <body>
 	<?php
+		/*
+			Check if a session is already existing. If existing, then redirect to land.php(homepage)
+		*/
 		session_start();
 		if(!empty($_SESSION['login_user'])){
 			header("location: land.php");
@@ -24,7 +35,7 @@
 		}
 
 		require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'config.php';
-		$con=mysqli_connect($hostname,$username,$password,$databasename);
+		$con=mysqli_connect($hostname,$username,$password,$databasename);						//Setup connection with the database.
 		if(mysqli_connect_errno()){
 			//die("Connection Error. Please try again in some time.");
 			header("location: error.html");
@@ -32,16 +43,25 @@
 			//echo '<script type="text/javascript">alert("Connection Set.");</script>';
 		}
 
+
 		if($_SERVER["REQUEST_METHOD"]=="POST"){
-			//include("config.php");
 			$uname=$_POST['username'];
 			$pass=$_POST['password'];
-			//$uname=mysqli_real_escape_string($databasename,$_POST['username']);
-			//$pass=mysqli_real_escape_string($databasename,$_POST['password']);
 			performLogin($uname,$pass,$con);
 		}
 
+		/*
+				Method - performLogin
+				Allows users to login to their profile.
 
+				Arguements -
+						$uname - username provided by the user at the time of login.
+						$pass  - passowrd provided by the user at the time of login.
+						$con   - connection variable.
+
+				Return -
+						Null
+		*/
 		function performLogin($uname,$pass,$con){
 			$query="select * from user where uemail='$uname' and upassword='$pass'";
 			$result=mysqli_query($con,$query);

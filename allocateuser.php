@@ -1,7 +1,17 @@
+<!--
+    ### STOCKHAWK ###
+    allocateuser.php :
+    Allocates all the new users who donot have any Portfolio manager assigned to them.
+
+-->
+
 <html>
 <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'header.html' ?>
 <body>
 <?php
+    /*
+    Check if the existing session expired or not. If expired, redirect to index.php.
+    */
     session_start();
     if(empty($_SESSION['login_user'])){
       header("location: land.php");exit();
@@ -10,7 +20,7 @@
       header("location: land.php");exit();
     }
     require_once './config.php';
-    $con = mysqli_connect($hostname, $username, $password, $databasename);
+    $con = mysqli_connect($hostname, $username, $password, $databasename);      // Setup connection with the database.
     if (mysqli_connect_errno()) {
       //die("Failed to connect");
       header("location: error.html");exit();
@@ -22,6 +32,18 @@
         allocate($con,$uname,$aname);
     }
 
+    /*
+        Method - allocate
+        Allocates a manager to an unallocated user one at a time.
+
+        Arguements -
+            $con   - Connection Variable. Checks if the connection is broken or not.
+            $uname - Name of user who donot have any Manager alloted to them.
+            $aname - Name of Manager who will be assigned to the present user.
+
+        Returns -
+            Null
+    */
     function allocate($con,$uname,$aname){
       $q0="select uemail from user where uemail='$aname' and isAdmin=true or isPM=true";
       $rs0=mysqli_query($con,$q0);
@@ -58,7 +80,11 @@
                   </tr>
                 </thead>
                 <tbody>
-                <?php $q1="select uemail,uname from user where allotedto='no'";
+                <?php
+                      /*
+                        List all the unallocated users.
+                      */
+                      $q1="select uemail,uname from user where allotedto='no'";
                       $rs1=mysqli_query($con,$q1);
                       if(mysqli_errno($con)){
                         header("location: error.php");exit();

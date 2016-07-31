@@ -1,9 +1,20 @@
+<!--
+    ### STOCKHAWK ###
+    market.php :
+    List all the company in the stock market along with their stock price.
+
+-->
+
 <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'header.html' ?>
 <body>
   <script type="text/javascript">
 
   </script>
+
   <?php
+  /*
+      Check if session exists. If not, redirect to index.php.
+  */
   session_start();
   if(empty($_SESSION['login_user'])){
     header("location: index.php");
@@ -16,10 +27,14 @@
       <div class="mdl-grid demo-content">
         <?php
         require_once './config.php';
-        $con = mysqli_connect($hostname, $username, $password, $databasename);
+        $con = mysqli_connect($hostname, $username, $password, $databasename);  // Setup connection with database.
         if (mysqli_connect_errno()) {
           header("location: error.html");//die("Failed to connect");
         }
+
+        /*
+            List all companies in this section. Also show their prices alongwith increase/decrease of prices.
+        */
         $q1="select cname,baseprice from company";
         $rs1=mysqli_query($con,$q1);
         if(mysqli_errno($con)){

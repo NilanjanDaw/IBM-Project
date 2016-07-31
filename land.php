@@ -1,34 +1,53 @@
+<!--
+    ### STOCKHAWK ###
+    land.php :
+    Homepage where user lands after login. Shows the portfolio, lists all transaction.
+    For admins, a notification is provided if there are any unallocated users.
+
+-->
+
 <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'land_chart.html' ?>
   <body>
     <script type="text/javascript">
 
     </script>
     <?php
+        /*
+          Check if session is expired or not. If expired, redirect to index.php.
+        */
         session_start();
         if(empty($_SESSION['login_user'])){
           header("location: index.php");exit();
         }
         require_once './config.php';
-        $con = mysqli_connect($hostname, $username, $password, $databasename);
+        $con = mysqli_connect($hostname, $username, $password, $databasename);  // Setup connection with the database.
         if (mysqli_connect_errno()) {
-          //die("Failed to connect");
           header("location: error.html");exit();
         }
 
 
         $u=$_SESSION['login_user'];
-        $query="select cash from user where uemail='$u'";
+        $query="select cash from user where uemail='$u'";                       //Get cash Balance of user
         $res=mysqli_query($con,$query);
         /*if(mysqli_errno($con)){
           header("location: error.php");exit();
         }*/
         $row=mysqli_fetch_array($res);
-        $availableCash=$row[0]; // Need to print this one.
+        $availableCash=$row[0];                                                 // Need to print this one.
 
 
+        /*
+              Method - updateCash
+              Update the cash balance of the user according to money spent/received.
 
+              Arguements -
+                    $val            - Money Amount.
+                    $type           - Type of transaction. 1-> Deposit. 2-> Withdraw.
+                    $availableCash  - Current Cash balance of user.
 
-
+              Returns -
+                    Null
+        */
         function updateCash($val,$type,$availableCash){
           //1-> deposit cash, 2-> withdraw cash
           if($type==1){
@@ -66,6 +85,9 @@
             </div>
             <div class="mdl-card__supporting-text mdl-color-text--black-500 mdl-cell mdl-cell--8-col ">
             <?php
+                /*
+                      Show User details.
+                */
                 $q1="select * from user where uemail='".$_SESSION['login_user']."'";
                 $rs1=mysqli_query($con, $q1);
                 if(mysqli_errno($con)){
@@ -100,6 +122,9 @@
                 <h2 class="mdl-card__title-text">Updates</h2>
               </div>
               <?php
+                  /*
+                      Check if user is an admin. If yes, show notification if there are any unallocated users. Else, provide a news window.
+                  */
                   if($_SESSION['user_type']=='admin' || $_SESSION['user_type']=='pm'){
                       $q1="select * from user where allotedto='no'";
                       $rs1=mysqli_query($con,$q1);
@@ -138,6 +163,9 @@
               <div class="mdl-card__supporting-text mdl-color-text--black-500">
                 <h6 class="mdl-color-text--teal-500">Your Transactions</h6>
                 <?php
+                /*
+                      List all the transaction of user.
+                */
                   $query="select * from utransaction where uemail='$u' order by tdate desc";
                   $res=mysqli_query($con,$query);
                   if($res==false){

@@ -1,31 +1,56 @@
+<!--
+    ### STOCKHAWK ###
+    managecash.php :
+    Withdraw or Deposit cash to/from user's account.
+
+-->
+
+
 <html>
 <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'land_chart.html' ?>
 <body>
     <?php
+        /*
+            Check if session exists or not. If not then redirect to index.php
+        */
         session_start();
         if(empty($_SESSION['login_user'])){
           header("location: index.php");exit();
         }
         require_once './config.php';
-        $con = mysqli_connect($hostname, $username, $password, $databasename);
+        $con = mysqli_connect($hostname, $username, $password, $databasename);  // Setup Connection with the database.
         if (mysqli_connect_errno()) {
-          //die("Failed to connect");
           header("location: error.html");exit();
         }
-        $q="select cash from user where uemail='$_SESSION[login_user]'";
+        $q="select cash from user where uemail='$_SESSION[login_user]'";        // Get the present cash balance of user.
         $rs=mysqli_query($con,$q);
         $curcash=mysqli_fetch_array($rs);
+
+                                                                                // On clicking deposit button.
         if(isset($_POST['deposit'])){
             $val=$_POST['amount'];
             unset($_POST['deposit']);
             depositcash($con,$_SESSION['login_user'],$val);
         }
+                                                                                //On clicking withdraw button
         if(isset($_POST['withdraw'])){
             $val=$_POST['amount'];
             unset($_POST['withdraw']);
             withdrawcash($con,$_SESSION['login_user'],$val);
         }
 
+        /*
+            Method - depositcash
+            Adds cash to user's present cash balance.
+
+            Arguements -
+                  $con   - Connection Variable.
+                  $uname - Username of current user.
+                  $val   - Amount to deposit.
+
+            Returns -
+                  Null
+        */
         function depositcash($con,$uname,$val){
             $q1="update user set cash=cash+'$val' where uemail='$uname'";
             $rs1=mysqli_query($con,$q1);
@@ -35,7 +60,20 @@
             header("location: managecash.php");exit();
         }
 
+        /*
+            Method - withdrawcash
+            withdraw cash from user's account.
+
+            Arguements -
+                  $con   - Connection Variable.
+                  $uname - Username of current user.
+                  $val   - Amount to deposit.
+
+            Returns -
+                Null
+        */
         function withdrawcash($con,$uname,$val){
+            // Check if enough cash is available.
             $q1="select cash from user where uemail='$uname'";
             $rs1=mysqli_query($con,$q1);
             if(mysqli_errno($con)){
@@ -45,6 +83,7 @@
             if($val>$row['cash']){
                 $val=$row['cash'];
             }
+            //Update cash.
             $q2="update user set cash=cash-'$val' where uemail='$uname'";
             $rs2=mysqli_query($con,$q2);
             if(mysqli_errno($con)){

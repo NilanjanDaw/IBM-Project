@@ -1,3 +1,9 @@
+<!--
+    ### STOCKHAWK ###
+    logout.php :
+    Destroys all existing session. redirect to index.php.
+-->
+
 <?php
     session_start();
     echo 'so you are here finally.prepare to die';

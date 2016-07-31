@@ -1,7 +1,14 @@
+<!--
+    ### STOCKHAWK ###
+    updatestock.php :
+    Allows managers and admin to add new stock/company in the market.
+
+-->
 <html>
 <?php require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'header.html' ?>
 
 <?php
+      //Checking for existing session.
       session_start();
       if(empty($_SESSION['login_user'])){
         header("location: land.php");exit();
@@ -10,11 +17,14 @@
         header("location: land.php");exit();
       }
       require_once './config.php';
+
+      //Setting up connection with the database
       $con = mysqli_connect($hostname, $username, $password, $databasename);
       if (mysqli_connect_errno()) {
-        header("location: error.html");//die("Failed to connect");
+        header("location: error.html");
       }
 
+      //Button Click- Spilt.
       if(isset($_POST['split'])){
           $cname=$_POST['cname'];
           $val=$_POST['newval'];
@@ -22,6 +32,7 @@
           splitStock($con,$cname,$val);
       }
 
+      //Button Click- Add Company
       if(isset($_POST['addco'])){
           $cname=$_POST['cname2'];
           $totalstock=$_POST['totalstock'];
@@ -31,6 +42,20 @@
           addcompany($con,$cname,$totalstock,$rat,$baseprice);
       }
 
+      /*
+          Method - addcompany
+          Add new company alongwith its details in the database.
+
+          Arguements -
+                $con        - Connection Variable
+                $cname      - Company Name
+                $tot        - Total number of stocks.
+                $base       - Base price of each stock.
+                $rat        - ratio. Product of total number of stock and base price.
+
+          Returns -
+                Null.
+      */
       function addcompany($con,$cname,$tot,$rat,$base){
           $q1="insert into company values('$cname','$tot','$rat','$base')";
           $rs1=mysqli_query($con,$q1);
@@ -40,8 +65,17 @@
           header("location: updatestock.php");
       }
 
+      /*
+          Method - splitStock
+          Split Stock Functionality.
 
+          Arguements -
+                $con      - Connection Variable
+                $cname    - Company Name
+                $val      - Number of new stock per 1 stock.
+      */
       function splitStock($con,$cname,$val){
+          // Checking whether the mentioned company exists or not.
           $q1="select * from company where cname='$cname'";
           $rs1=mysqli_query($con,$q1);
           if(mysqli_errno($con)){
@@ -56,16 +90,22 @@
           $newstock=$r1['totalstock']*$val;
           $newprice=($r1['ratio']*1000)/$newstock;
           $newratio=$newprice/$r1['baseprice'];
+
+          //Update totalstock and baseprice of the company after the split.
           $q2="update company set totalstock='$newstock',baseprice='$newprice' where cname='$cname'";
           $rs2=mysqli_query($con,$q2);
           if(mysqli_errno($con)){
             header("location: error.html");exit();
           }
+
+          //Record the change in price per stock in the stockvalue table.
           $q3="insert into stockvalue values('$cname','$newprice',now())";
           $rs3=mysqli_query($con,$q3);
           if(mysqli_errno($con)){
             header("location: error.html");exit();
           }
+
+          //Update transaction table accordingly.
           $q4="update utransaction set quantity=quantity*'$val',price=price*'$newratio' where company='$cname'";
           $rs4=mysqli_query($con,$q4);
           if(mysqli_errno($con)){
@@ -73,6 +113,11 @@
           }
           header("location: updatestock.php");exit();
       }
+
+      /*
+          Method - updateValue
+          Not used.
+      */
       function updateValue($cname,$newval){
         $q1="insert into stockvalue values('$cname','$newval',now())";
         $r1=mysqli_query($con,$q1);
@@ -99,7 +144,9 @@
               </tr>
             </thead>
             <tbody>
-            <?php $q1="select * from company";
+            <?php
+                  //printing the companies
+                  $q1="select * from company";
                   $rs1=mysqli_query($con,$q1);
                   if(mysqli_errno($con)){
                     header("location: error.php");exit();
