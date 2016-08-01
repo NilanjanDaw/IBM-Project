@@ -71,8 +71,8 @@
 
 ## Jul 31, 2016
 @Author Nilanjan Daw
-- Partial Form Validation(PS Note to others. DONOT add Documentation to any pure PHP, header or configuration files)
-- Added Documentation
+- Partial Form Validation.
+- Added Documentation(PS Note to others. DONOT add Documentation to any pure PHP, header or configuration files)
 
 ## Aug 1, 2016
 @Author Priyanjit Dey
