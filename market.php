@@ -17,7 +17,7 @@
   */
   session_start();
   if(empty($_SESSION['login_user'])){
-    header("location: index.php");
+    header("location: index.php");exit();
   }
    ?>
   <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">

@@ -23,6 +23,13 @@
       if (mysqli_connect_errno()) {
         header("location: error.html");
       }
+      //Error Checking
+      if(isset($_GET['Message'])){
+        $msg=$_GET['Message'];
+        unset($_GET['Message']);
+        echo '<script type="text/javascript">alert("'.$msg.'");</script>';
+        //echo $msg;
+      }
 
       //Button Click- Spilt.
       if(isset($_POST['split'])){
@@ -83,8 +90,8 @@
           }
           $cnt=mysqli_num_rows($rs1);
           if($cnt==0){
-            echo '<script type="text/javascript">alert("No such company exits.");</script>';
-            header("location: updatestock.php");exit();
+            $msg="No such company exits.";
+            header("location: updatestock.php?Message=".urlencode($msg));exit();
           }
           $r1=mysqli_fetch_array($rs1);
           $newstock=$r1['totalstock']*$val;
@@ -176,7 +183,7 @@
               <label class="mdl-textfield__label" for="sample1">Company</label>
             </div>
             <div class="mdl-textfield mdl-js-textfield">
-              <input class="mdl-textfield__input" type="text" id="newval" name="newval">
+              <input class="mdl-textfield__input" type="number" id="newval" name="newval">
               <label class="mdl-textfield__label" for="sample1">Split Share</label>
             </div>
 
@@ -199,11 +206,11 @@
               <label class="mdl-textfield__label" for="sample2">Company</label>
             </div>
             <div class="mdl-textfield mdl-js-textfield">
-              <input class="mdl-textfield__input" type="text" id="totalstock" name="totalstock">
+              <input class="mdl-textfield__input" type="number" id="totalstock" name="totalstock">
               <label class="mdl-textfield__label" for="sample2">Total Stock</label>
             </div>
             <div class="mdl-textfield mdl-js-textfield">
-              <input class="mdl-textfield__input" type="text" id="baseprice" name="baseprice">
+              <input class="mdl-textfield__input" type="number" id="baseprice" name="baseprice">
               <label class="mdl-textfield__label" for="sample2">Base Price</label>
             </div>
 

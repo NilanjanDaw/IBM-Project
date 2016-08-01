@@ -28,13 +28,17 @@
       require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'config.php';
       $con=mysqli_connect($hostname,$username,$password,$databasename);         //Setup connection with database.
       if(mysqli_connect_errno()){
-        header("location: error.html");
-      }else{
-        //echo '<script type="text/javascript">alert("Connection Set.");</script>';
+        header("location: error.html");exit();
       }
 
+			//Check for error.
+			if(isset($_GET['Message'])){
+				$msg=$_GET['Message'];
+        unset($_GET['Message']);
+        echo '<script type="text/javascript">alert("'.$msg.'");</script>';
+			}
+
       if($_SERVER["REQUEST_METHOD"]=="POST"){
-        //include("config.php");
         $uemail=$_POST['useremail'];
         $uname=$_POST['username'];
         $repass=$_POST['repassword'];
@@ -64,8 +68,8 @@
           $res=mysqli_query($query);
           // Checking if username already exists.
           if(res>=1){
-            echo '<script type="text/javascript">alert("Email ID is already registered.");</script>';
-            header("refresh:5;url=register.php");
+						$m="User already exists";
+            header("location=register.php?Message=".urlencode($m));
             exit();
           }else{
             $insquery="insert into `user` values('$uemail','$uname','$cash','$allot','$isadmin','$ispm','$pass')";
@@ -74,14 +78,14 @@
           $retval=true;
 
           if($retval==true){
-            header("location: welcome.php");
+            header("location: land.php");
             exit();
           }else{
             //$delquery="delete from user where uemail='$uemail'";
           }
         }else{
-          echo '<script type="text/javascript">alert("Password Mismatch.");</script>';
-          header("refresh:5;url=register.php");
+          $m="Password Mismatch";
+          header("location=register.php?Message=".urlencode($m));
           exit();
         }
       }

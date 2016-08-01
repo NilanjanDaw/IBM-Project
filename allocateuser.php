@@ -26,6 +26,12 @@
       header("location: error.html");exit();
     }
 
+    if(isset($_GET['Message'])){
+      $msg=$_GET['Message'];
+      unset($_GET['Message']);
+      echo '<script type="text/javascript">alert("'.$msg.'");</script>';
+    }
+
     if($_SERVER["REQUEST_METHOD"]=="POST"){
         $uname=$_POST['uname'];
         $aname=$_POST['aname'];
@@ -51,9 +57,15 @@
       if($cnt>0){
         $q1="update user set allotedto='$aname' where uemail='$uname'";
         $rs1=mysqli_query($con,$q1);
-        if(mysqli_errno($con)){header("location: error.php");}
+        if(mysqli_errno($con)){header("location: error.php");exit();}
+        $rowCount=mysqli_num_rows($rs1);
+        if($rowCount==0){
+            $msg="Invalid Username or Admin";
+            header("location:allocateuser.php?Message=".urlencode($msg));exit();
+        }
       }else{
-         echo '<script type="text/javascript">alert("No such Admin/PM exists.");</script>';
+         $msg="No Such Admin";
+         header("location:allocateuser.php?Message=".urlencode($msg));exit();
       }
 
 

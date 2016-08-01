@@ -12,16 +12,20 @@
     */
     session_start();
     if(empty($_SESSION['login_user'])){
-      header("location: index.php");
+      header("location: index.php");exit();
     }
     require_once './config.php';
     $con = mysqli_connect($hostname, $username, $password, $databasename);      //Setup Connection with database.
     if (mysqli_connect_errno()) {
       header("location: error.php");
       exit();
-      die("Failed to connect");
     }
-
+    //Error Checking
+    if(isset($_GET['Message'])){
+      $msg=$_GET['Message'];
+      unset($_GET['Message']);
+      echo '<script type="text/javascript">alert("'.$msg.'");</script>';
+    }
 
     $cname=$_COOKIE['company'];
     $uname=$_SESSION['login_user'];
@@ -56,8 +60,8 @@
 
         //Checking if Enough stock is available.
         if($rowcompany['totalstock'] < $stocknum){
-            echo '<script type="text/javascript">alert("Enough stock not available.");</script>';
-            header("location: purchase.php");exit();
+            $msg="Enough stock not available";
+            header("location: purchase.php?Message=".urlencode($msg));exit();
         }
 
         //Checking if enough cash is available.
@@ -69,12 +73,12 @@
         }
         $rowuser=mysqli_fetch_array($rsuser);
         if($rowuser['cash'] <= $totalcost){
-            echo '<script type="text/javascript">alert("Enough Cash not available.");</script>';
-            header("location: purchase.php");exit();
+            $msg="Enough cash not available";
+            header("location: purchase.php?Message=".urlencode($msg));exit();
         }
         if($rowuser['allotedto']=="no"){
-          echo '<script type="text/javascript">alert("User not alloted to any Manager.");</script>';
-          header("location: purchase.php");exit();
+          $msg="User not alloted to any manager";
+          header("location: purchase.php?Message=".urlencode($msg));exit();
         }
 
         //Inserting record in utransaction table.

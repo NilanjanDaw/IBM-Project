@@ -22,10 +22,16 @@
         if (mysqli_connect_errno()) {
           header("location: error.html");exit();
         }
+
         $q="select cash from user where uemail='$_SESSION[login_user]'";        // Get the present cash balance of user.
         $rs=mysqli_query($con,$q);
         $curcash=mysqli_fetch_array($rs);
 
+        //Check if any error occured.
+        if(isset($_GET['Message'])){
+            echo '<script type="text/javascript">alert("Invalid Amount. Please try again.");</script>';
+            unset($_GET['Message']);
+        }
                                                                                 // On clicking deposit button.
         if(isset($_POST['deposit'])){
             $val=$_POST['amount'];
@@ -38,6 +44,7 @@
             unset($_POST['withdraw']);
             withdrawcash($con,$_SESSION['login_user'],$val);
         }
+
 
         /*
             Method - depositcash
@@ -52,12 +59,17 @@
                   Null
         */
         function depositcash($con,$uname,$val){
-            $q1="update user set cash=cash+'$val' where uemail='$uname'";
-            $rs1=mysqli_query($con,$q1);
-            if(mysqli_errno($con)){
-                header("location: error.html");exit();
+            if(is_numeric($val)){
+              $q1="update user set cash=cash+'$val' where uemail='$uname'";
+              $rs1=mysqli_query($con,$q1);
+              if(mysqli_errno($con)){
+                  header("location: error.html");exit();
+              }
+              header("location: managecash.php");exit();
+            }else{
+              $msg="Invalid Input";
+              header("location:managecash.php?Message=".urlencode($msg));exit();
             }
-            header("location: managecash.php");exit();
         }
 
         /*
@@ -74,23 +86,30 @@
         */
         function withdrawcash($con,$uname,$val){
             // Check if enough cash is available.
-            $q1="select cash from user where uemail='$uname'";
-            $rs1=mysqli_query($con,$q1);
-            if(mysqli_errno($con)){
-                header("location: error.html");exit();
-            }
-            $row=mysqli_fetch_array($rs1);
-            if($val>$row['cash']){
-                $val=$row['cash'];
-            }
-            //Update cash.
-            $q2="update user set cash=cash-'$val' where uemail='$uname'";
-            $rs2=mysqli_query($con,$q2);
-            if(mysqli_errno($con)){
-                header("location: error.html");exit();
-            }
-            header("location: managecash.php");exit();
+            if(is_numeric($val)){
+                $q1="select cash from user where uemail='$uname'";
+                $rs1=mysqli_query($con,$q1);
+                if(mysqli_errno($con)){
+                    header("location: error.html");exit();
+                }
+                $row=mysqli_fetch_array($rs1);
+                if($val>$row['cash']){
+                    $val=$row['cash'];
+                }
+                //Update cash.
+                $q2="update user set cash=cash-'$val' where uemail='$uname'";
+                $rs2=mysqli_query($con,$q2);
+                if(mysqli_errno($con)){
+                    header("location: error.html");exit();
+                }
+                header("location: managecash.php");exit();
+          }else{
+            $msg="Invalid Input";
+            header("location:managecash.php?Message=".urlencode($msg));exit();
+          }
         }
+
+
     ?>
 
     <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
@@ -104,22 +123,42 @@
             <h3>Manage Cash</h3>
             <?php echo '<h5> Your Current cash balance is '.$curcash[0].'.</h6>'; ?>
             <!-- Simple Textfield -->
-          <form method="post">
+          <form method="post" name="manage_cash">
             <div class="mdl-textfield mdl-js-textfield">
-              <input class="mdl-textfield__input" type="text" id="cname" name="amount">
+              <input class="mdl-textfield__input" type="number" id="cname" name="amount">
               <label class="mdl-textfield__label" for="sample1">Amount</label>
             </div>
 
             <div class="mdl-card__actions mdl-card--border">
-              <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--teal-500" name="deposit">Deposit</button>
-              <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--teal-500" name="withdraw">Withdraw</button>
+              <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--teal-500" name="deposit" >Deposit</button>
+              <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--teal-500" name="withdraw" >Withdraw</button>
               <div class="mdl-layout-spacer"></div>
             </div>
 
           </form>
           </div>
         </div>
+        <div id="toast" class="mdl-js-snackbar mdl-snackbar">
+          <div class="mdl-snackbar__text"></div>
+          <button class="mdl-snackbar__action" type="button"></button>
+        </div>
 
+        <script type="text/javascript">
+          function manageCash(){
+            var cash=document.getElementById('cname').value;
+            var snackbarContainer=document.getElementById('toast');
+            cash=cash.trim();
+            if(!Number.isNaN(parseInt(cash))){
+                document.manage_cash.submit();
+                //return true;
+            }else {
+                document.getElementById('cname').value="";
+                var data="Invalid Input! Please try again!";
+                alert(data);
+                //return false;
+            }
+          }
+        </script>
       </main>
     </div>
     <script src="../../material.min.js"></script>

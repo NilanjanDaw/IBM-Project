@@ -14,7 +14,7 @@
       */
       session_start();
       if(empty($_SESSION['login_user'])){
-        header("location: index.php");
+        header("location: index.php");exit();
       }
       require_once './config.php';
       $con = mysqli_connect($hostname, $username, $password, $databasename);    //Setup connection with database.
@@ -43,6 +43,20 @@
                   Null
       */
       function perfomSell($con,$uname,$cname,$stocksell){
+
+          // Company details.
+          $qcompany="select * from company where cname='$cname'";
+          $rscompany=mysqli_query($con,$qcompany);
+          if(mysqli_errno($con)){
+              header("location: error.html");exit();
+          }
+          $rowcompany=mysqli_fetch_array($rscompany);
+          $countCompany=mysqli_num_rows($rscompany);
+          if($countCompany==0){
+              echo '<script type="text/javascript">alert("No such company exists. Please try with a valid company.");</script>';
+              header("location:sellstock.php");
+              exit();
+          }
           //Calculating the number of stock of the company the user has.
           $q1="select quantity,ttype from utransaction where uemail='$uname' and company='$cname'";
           $rs1=mysqli_query($con,$q1);
@@ -64,13 +78,7 @@
               header("location: sellstock.php");exit();
           }
 
-          // Company details.
-          $qcompany="select * from company where cname='$cname'";
-          $rscompany=mysqli_query($con,$qcompany);
-          if(mysqli_errno($con)){
-              header("location: error.html");exit();
-          }
-          $rowcompany=mysqli_fetch_array($rscompany);
+
 
           //User detals.
           $quser="select * from user where uemail='$uname'";

@@ -6,7 +6,7 @@
   <?php
       session_start();
       if(empty($_SESSION['login_user'])){
-        header("location: index.php");
+        header("location: index.php");exit();
       }
       require_once './config.php';
       $con = mysqli_connect($hostname, $username, $password, $databasename);
@@ -19,7 +19,7 @@
   .demo-charts:hover {
     box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
   }
-  
+
   </style>
 
   <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">

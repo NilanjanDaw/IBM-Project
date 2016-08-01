@@ -16,7 +16,7 @@
       */
       session_start();
       if(empty($_SESSION['login_user'])){
-        header("location: index.php");
+        header("location: index.php");exit();
       }
       require_once './config.php';
       $con = mysqli_connect($hostname, $username, $password, $databasename);      //Connection setup with database.
@@ -41,7 +41,7 @@
             <h2 class="mdl-card__title-text">Help and Information</h2>
           </div>
           <?php
-              //printing out the information 
+              //printing out the information
               echo '
               <div class="demo-charts mdl-color--white mdl-shadow--8dp mdl-cell mdl-cell--12-col mdl-grid">
                 <div class="mdl-card__supporting-text mdl-color-text--black-500">

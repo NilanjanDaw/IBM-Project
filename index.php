@@ -106,12 +106,18 @@
 				<br/>
 				<button type="submit">Sign In</button>
 				<br/>
-				<a href="land.php"><p class="small">Forgot your password?</p></a>
+				<a href="#" onclick="forgot()"><p class="small">Forgot your password?</p></a>
 				<a href="register.php"><p class="small">New User?Register here</p></a>
 		</form>
 		</div>
 	</div>
 </body>
+
+<script type="text/javascript">
+	function forgot(){
+		alert("Please mail to moderator at priyanjitcareer[at]gmail[dot]com.");
+	}
+</script>
 
 <script>
 	$(document).ready(function () {

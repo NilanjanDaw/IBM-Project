@@ -17,18 +17,18 @@
       */
       session_start();
       if(empty($_SESSION['login_user'])){
-        header("location: index.php");
+        header("location: index.php");exit();
       }
       require_once './config.php';
       $con = mysqli_connect($hostname, $username, $password, $databasename);
       if (mysqli_connect_errno()) {
         header("location: error.html");//die("Failed to connect");
       }
-
+      
       /*
         Sending message to server.
       */
-      if (array_key_exists('message', $_POST)) {
+      /*if (array_key_exists('message', $_POST)) {
         # code...
         $fromuser = $_SESSION['login_user'];
         $query = "insert into message(msgbody, touser, fromuser) values('"
@@ -41,13 +41,13 @@
       }
 
       /*
-          Query to insert the message in the database.
+          Query to list all sent messages.
       */
       $u=$_SESSION['login_user'];
       $query="select msgbody,touser from message where fromuser='$u';";
       $res=mysqli_query($con,$query);
       if(mysqli_errno($con)){
-          echo 'error occured';
+          header("location:error.php");exit();
       }
 
 ?>

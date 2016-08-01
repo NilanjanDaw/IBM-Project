@@ -17,13 +17,20 @@
       */
       session_start();
       if(empty($_SESSION['login_user'])){
-        header("location: index.php");
+        header("location: index.php");exit();
       }
       require_once './config.php';
       $con = mysqli_connect($hostname, $username, $password, $databasename);    // Setup connection with the database
       if (mysqli_connect_errno()) {
         //die("Failed to connect");
         header("location: error.html");
+      }
+
+      //checking for error
+      if(isset($_GET['Message'])){
+        $msg=$_GET['Message'];
+        unset($_GET['Message']);
+        echo '<script type="text/javascript">alert("'.$msg.'");</script>';
       }
 
       $u=$_SESSION['login_user'];
@@ -53,14 +60,14 @@
             <div class="mdl-card__supporting-text mdl-color-text--red-500">
               <h3>Report Error</h3>
               <!-- Simple Textfield -->
-              <form action="error_submit.php" method="post">
+              <form action="error_submit.php" name="err" method="post">
 
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell mdl-cell--12-col">
-                  <textarea class="mdl-textfield__input" type="text" rows="10" name="error_msg"></textarea>
+                  <textarea class="mdl-textfield__input" type="text" id="msgbody" rows="10" name="error_msg"></textarea>
                   <label class="mdl-textfield__label" for="error_msg">Describe the issue within 500 characters</label>
                 </div>
                 <div class="mdl-card__actions mdl-card--border">
-                  <input type="submit" name="error_button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--red-500" value="Send">
+                  <input type="button" name="error_button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--red-500" value="Send" onclick="check()">
                   <div class="mdl-layout-spacer"></div>
                 </div>
               </form>
@@ -68,6 +75,17 @@
 
           </div>
         </div>
+        <script type="text/javascript">
+          function check(){
+            var msg=document.getElementById('msgbody').value;
+            msg.trim();
+            if(msg==''){
+              alert('Message cannot be empty');
+            }else{
+              document.err.submit();
+            }
+          }
+        </script>
     </main>
           <!--<a href="https://github.com/google/material-design-lite/blob/master/templates/dashboard/" target="_blank" id="view-source" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">View Source</a> -->
   <script src="../../material.min.js"></script>
