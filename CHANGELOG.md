@@ -79,3 +79,8 @@
 - Form Validation complete.
 - Improved Documentation
 - Minor Bug fixes and UI improvements.
+
+## Aug 2, 2016
+@Author Nilanjan Daw
+- Created Flowcharts(Main Module and Transaction Module)
+- Updated Report
