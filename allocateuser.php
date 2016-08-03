@@ -115,7 +115,7 @@
           <div class="demo-separator mdl-cell--1-col"></div>
           <div class="demo-options mdl-card mdl-color--white-500 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
             <div class="mdl-card__supporting-text mdl-color-text--teal-500">
-              <h3>Stock Split</h3>
+              <h3>Allocate User</h3>
               <!-- Simple Textfield -->
             <form method="post">
               <div class="mdl-textfield mdl-js-textfield">
