@@ -4,7 +4,7 @@ applications:
   instances: 1
   domain: mybluemix.net
   name: StockHawk
-  host: StockHawk
+  host: stockhawk
   disk_quota: 1024M
   services:
   - ClearDB MySQL Database-4f
